@@ -1,0 +1,130 @@
+.dashboard-page {
+  padding: 0;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.stats-card .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.action-card .action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 0;
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.recent-item:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-hover);
+  transform: translateX(2px);
+}
+
+.recent-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recent-title {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.recent-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.recent-status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.recent-status.draft {
+  background: rgba(255, 141, 114, 0.2);
+  color: var(--warning-color);
+}
+
+.recent-status.generated {
+  background: rgba(0, 242, 195, 0.2);
+  color: var(--success-color);
+}
+
+.info-list {
+  padding: 20px;
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.info-list li {
+  margin-bottom: 10px;
+}
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-card .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

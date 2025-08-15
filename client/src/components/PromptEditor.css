@@ -1,0 +1,142 @@
+.prompt-editor-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  outline: none;
+}
+
+.prompt-editor-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.prompt-editor-title {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin: 0 0 10px 0;
+}
+
+.prompt-editor-info {
+  display: flex;
+  gap: 15px;
+  font-size: 0.875rem;
+}
+
+.slide-info {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.placeholder-info {
+  color: var(--text-secondary);
+}
+
+.prompt-editor-body {
+  padding: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.prompt-textarea {
+  width: 100%;
+  min-height: 150px;
+  max-height: 300px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.saving-indicator {
+  color: var(--warning-color);
+  font-size: 0.75rem;
+  font-weight: normal;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.prompt-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.char-count,
+.word-count {
+  padding: 2px 8px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+}
+
+.sample-prompts {
+  margin-top: 25px;
+  padding: 15px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.sample-title {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+
+.sample-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sample-item {
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.sample-item:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.sample-item:last-child {
+  margin-bottom: 0;
+}
+
+.prompt-editor-footer {
+  padding: 20px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Dark mode override for MUI Modal backdrop */
+.MuiBackdrop-root {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
