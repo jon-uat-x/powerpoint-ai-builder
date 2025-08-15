@@ -1,0 +1,60 @@
+.draggable-slide-wrapper {
+  position: relative;
+}
+
+.draggable-slide-thumbnail {
+  cursor: move;
+  transition: transform 0.2s ease;
+}
+
+.draggable-slide-thumbnail.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.draggable-slide-thumbnail.drag-over {
+  transform: scale(1.02);
+}
+
+.drop-indicator {
+  position: absolute;
+  top: -15px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary-color);
+  border-radius: 2px;
+  z-index: 100;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Drop zone between slides */
+.slide-drop-zone {
+  height: 20px;
+  margin: -10px 0;
+  position: relative;
+  z-index: 50;
+  transition: all 0.2s ease;
+}
+
+.slide-drop-zone.active {
+  height: 80px;
+  margin: 10px 0;
+  border: 2px dashed var(--primary-color);
+  border-radius: 8px;
+  background: rgba(229, 81, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  font-size: 0.875rem;
+}

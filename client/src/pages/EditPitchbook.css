@@ -1,0 +1,39 @@
+.edit-pitchbook-page {
+  margin-right: 320px;
+  transition: var(--transition);
+  min-height: 100vh;
+}
+
+.edit-pitchbook-page.right-sidebar-collapsed {
+  margin-right: 80px;
+}
+
+/* Content adjustments */
+.content-header {
+  padding-bottom: 20px;
+}
+
+.edit-pitchbook-content {
+  padding: 0 20px 20px 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+  .edit-pitchbook-page {
+    margin-right: 280px;
+  }
+  
+  .edit-pitchbook-page.right-sidebar-collapsed {
+    margin-right: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .edit-pitchbook-page {
+    margin-right: 0;
+  }
+  
+  .edit-pitchbook-page.right-sidebar-collapsed {
+    margin-right: 0;
+  }
+}

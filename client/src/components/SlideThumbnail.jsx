@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './SlideThumbnail.css';
 
-const SlideThumbnail = ({ slide, onPlaceholderClick }) => {
+const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, showDelete = false }) => {
   const [hoveredPlaceholder, setHoveredPlaceholder] = useState(null);
 
   const handlePlaceholderClick = (e, placeholderId, placeholderInfo) => {
@@ -78,6 +78,18 @@ const SlideThumbnail = ({ slide, onPlaceholderClick }) => {
         <span className="prompt-count">
           {Object.keys(slide.prompts || {}).length} / {slide.layout?.placeholders?.length || 0} prompts
         </span>
+        {showDelete && (
+          <button 
+            className="delete-slide-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onDelete) onDelete(slide);
+            }}
+            title="Delete slide"
+          >
+            ❌
+          </button>
+        )}
       </div>
     </div>
   );

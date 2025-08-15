@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
-const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+const Sidebar = ({ collapsed = false, onToggle }) => {
+  const [localCollapsed, setLocalCollapsed] = useState(collapsed);
+  
+  // Use prop if provided, otherwise use local state
+  const isCollapsed = onToggle ? collapsed : localCollapsed;
 
   const menuItems = [
     {
@@ -28,17 +31,25 @@ const Sidebar = () => {
     }
   ];
 
+  const handleToggle = () => {
+    if (onToggle) {
+      onToggle(!isCollapsed);
+    } else {
+      setLocalCollapsed(!localCollapsed);
+    }
+  };
+
   return (
-    <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-header">
         <h2 className="sidebar-title">
-          {!collapsed && 'Pitchbook AI'}
+          {!isCollapsed && 'Pitchbook AI'}
         </h2>
         <button 
           className="sidebar-toggle"
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={handleToggle}
         >
-          {collapsed ? '→' : '←'}
+          {isCollapsed ? '→' : '←'}
         </button>
       </div>
 
@@ -50,16 +61,16 @@ const Sidebar = () => {
             className={({ isActive }) => 
               `sidebar-link ${isActive ? 'active' : ''}`
             }
-            title={collapsed ? item.title : ''}
+            title={isCollapsed ? item.title : ''}
           >
             <span className="sidebar-icon">{item.icon}</span>
-            {!collapsed && <span className="sidebar-text">{item.title}</span>}
+            {!isCollapsed && <span className="sidebar-text">{item.title}</span>}
           </NavLink>
         ))}
       </nav>
 
       <div className="sidebar-footer">
-        {!collapsed && (
+        {!isCollapsed && (
           <div className="sidebar-footer-content">
             <p className="sidebar-footer-text">AI Pitchbook Builder</p>
             <p className="sidebar-footer-version">v1.0.0</p>

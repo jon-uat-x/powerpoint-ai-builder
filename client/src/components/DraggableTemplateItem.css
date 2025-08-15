@@ -1,0 +1,35 @@
+.draggable-template {
+  cursor: grab;
+  position: relative;
+}
+
+.draggable-template:hover {
+  cursor: grab;
+}
+
+.draggable-template.dragging {
+  cursor: grabbing;
+  opacity: 0.5;
+}
+
+.drag-hint {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--primary-color);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.625rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.draggable-template:hover .drag-hint {
+  opacity: 0.8;
+}
+
+.draggable-template.dragging .drag-hint {
+  opacity: 0;
+}

@@ -1,0 +1,234 @@
+.right-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 320px;
+  background: linear-gradient(180deg, var(--bg-sidebar) 0%, #27293d 100%);
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+  z-index: 999;
+}
+
+.right-sidebar.collapsed {
+  width: 80px;
+}
+
+.right-sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
+}
+
+.right-sidebar-title {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.right-sidebar-toggle {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.right-sidebar-toggle:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+.right-sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 0;
+  min-height: 0; /* Important for flex overflow */
+  position: relative;
+}
+
+.add-slides-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 20px 20px 20px;
+  align-items: center;
+}
+
+.add-slide-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 75%;
+  max-width: 200px;
+}
+
+.add-slide-item:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.add-slide-thumbnail {
+  width: 100%;
+  height: 100px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.add-slide-placeholder {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.688rem;
+  padding: 8px;
+}
+
+.add-slide-details {
+  text-align: center;
+}
+
+.add-slide-name {
+  font-size: 0.813rem;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  font-weight: 400;
+}
+
+.add-slide-meta {
+  font-size: 0.688rem;
+  color: var(--text-secondary);
+}
+
+/* Collapsed state */
+.right-sidebar-collapsed-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.collapsed-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Scrollbar styles for the content area */
+.right-sidebar-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.right-sidebar-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+.right-sidebar-content::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+.right-sidebar-content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+/* Scroll indicators */
+.right-sidebar-content::before,
+.right-sidebar-content::after {
+  content: '';
+  position: sticky;
+  left: 0;
+  right: 0;
+  height: 20px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.right-sidebar-content::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--bg-sidebar), transparent);
+}
+
+.right-sidebar-content::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--bg-sidebar), transparent);
+}
+
+/* Scroll hint */
+.scroll-hint {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding: 8px;
+  margin: 0 20px 12px;
+  background: var(--bg-card);
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+  .right-sidebar {
+    width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .right-sidebar {
+    display: none;
+  }
+}

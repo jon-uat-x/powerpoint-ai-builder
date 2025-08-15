@@ -1,5 +1,5 @@
 .slide-grid-container {
-  padding: 20px;
+  padding: 0;
 }
 
 .slide-grid-header {
@@ -20,8 +20,9 @@
 
 .slide-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, 228px);
   gap: 30px;
+  justify-content: start;
 }
 
 .loading-container {
@@ -44,12 +45,12 @@
 
 @media (max-width: 768px) {
   .slide-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, 190px);
   }
 }
 
 @media (min-width: 1400px) {
   .slide-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, 247px);
   }
 }
