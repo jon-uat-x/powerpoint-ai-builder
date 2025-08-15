@@ -14,8 +14,8 @@
   --border-color: #3f3f56;
   --border-hover: #5a5a7e;
   
-  --primary-color: #9c27b0;
-  --primary-hover: #ba68c8;
+  --primary-color: #e55100;
+  --primary-hover: #ff6b35;
   --success-color: #00f2c3;
   --info-color: #1d8cf8;
   --warning-color: #ff8d72;
@@ -122,11 +122,11 @@ body {
 .btn-primary {
   background: linear-gradient(60deg, var(--primary-color), var(--primary-hover));
   color: white;
-  box-shadow: 0 4px 20px 0 rgba(156, 39, 176, 0.3);
+  box-shadow: 0 4px 20px 0 rgba(229, 81, 0, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
-  box-shadow: 0 4px 20px 0 rgba(156, 39, 176, 0.5);
+  box-shadow: 0 4px 20px 0 rgba(229, 81, 0, 0.5);
   transform: translateY(-1px);
 }
 
@@ -202,7 +202,7 @@ body {
 .form-control:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(156, 39, 176, 0.2);
+  box-shadow: 0 0 0 2px rgba(229, 81, 0, 0.2);
 }
 
 .form-control::placeholder {
