@@ -8,6 +8,7 @@ const layoutRoutes = require('./routes/layouts');
 const pitchbookRoutes = require('./routes/pitchbooks');
 const thumbnailRoutes = require('./routes/thumbnails');
 const generateRoutes = require('./routes/generate');
+const templatePromptsRoutes = require('./routes/templatePrompts');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +26,7 @@ app.use('/api/layouts', layoutRoutes);
 app.use('/api/pitchbooks', pitchbookRoutes);
 app.use('/api/thumbnails', thumbnailRoutes);
 app.use('/api/generate', generateRoutes);
+app.use('/api/template-prompts', templatePromptsRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -47,4 +47,15 @@ export const generateAPI = {
   getStatus: (pitchbookId) => api.get(`/generate/${pitchbookId}/status`),
 };
 
+// Template Prompts APIs
+export const templatePromptsAPI = {
+  getAll: () => api.get('/template-prompts'),
+  getByLayout: (layoutName) => api.get(`/template-prompts/${encodeURIComponent(layoutName)}`),
+  updateAll: (layoutName, prompts) => api.put(`/template-prompts/${encodeURIComponent(layoutName)}`, { prompts }),
+  updateSingle: (layoutName, placeholderId, prompt) => 
+    api.patch(`/template-prompts/${encodeURIComponent(layoutName)}/${encodeURIComponent(placeholderId)}`, { prompt }),
+  delete: (layoutName, placeholderId) => 
+    api.delete(`/template-prompts/${encodeURIComponent(layoutName)}/${encodeURIComponent(placeholderId)}`),
+};
+
 export default api;

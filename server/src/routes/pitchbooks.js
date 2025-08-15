@@ -3,6 +3,7 @@ const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const fs = require('fs-extra');
+const templatePromptsService = require('../services/templatePromptsService');
 
 const dataPath = path.join(__dirname, '../data');
 
@@ -34,7 +35,7 @@ router.get('/', async (req, res) => {
 // POST /api/pitchbooks - Create new pitchbook
 router.post('/', async (req, res) => {
   try {
-    const { title, type, sections } = req.body;
+    const { title, type, sections, inheritTemplatePrompts = true } = req.body;
     
     if (!title || !sections || !Array.isArray(sections)) {
       return res.status(400).json({
@@ -43,13 +44,30 @@ router.post('/', async (req, res) => {
       });
     }
     
+    const slides = generateSlideStructure(sections);
+    let prompts = {};
+    
+    // Inherit default prompts from templates if requested
+    if (inheritTemplatePrompts) {
+      const layoutNames = [...new Set(slides.map(slide => slide.layoutName))];
+      const templatePrompts = await templatePromptsService.getPromptsForLayouts(layoutNames);
+      
+      // Map template prompts to slide prompts
+      slides.forEach(slide => {
+        const slideId = `slide_${slide.slideNumber}`;
+        if (templatePrompts[slide.layoutName]) {
+          prompts[slideId] = { ...templatePrompts[slide.layoutName] };
+        }
+      });
+    }
+    
     const pitchbook = {
       id: uuidv4(),
       title,
       type: type || 'standard',
       sections,
-      slides: generateSlideStructure(sections),
-      prompts: {},
+      slides,
+      prompts,
       created: new Date().toISOString(),
       updated: new Date().toISOString()
     };
