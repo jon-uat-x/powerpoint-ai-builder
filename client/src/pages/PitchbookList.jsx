@@ -1,13 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { usePitchbook } from '../contexts/PitchbookContext';
+import JsonViewerDialog from '../components/JsonViewerDialog';
+import './PitchbookList.css';
 
 const PitchbookList = () => {
   const { pitchbooks, loadPitchbooks, loading } = usePitchbook();
+  const [jsonDialogOpen, setJsonDialogOpen] = useState(false);
+  const [selectedPitchbook, setSelectedPitchbook] = useState(null);
 
   useEffect(() => {
     loadPitchbooks();
   }, []);
+
+  const handlePromptsTextClick = (pitchbook) => {
+    setSelectedPitchbook(pitchbook);
+    setJsonDialogOpen(true);
+  };
+
+  const handleJsonDialogClose = () => {
+    setJsonDialogOpen(false);
+    setSelectedPitchbook(null);
+  };
 
   return (
     <div className="pitchbook-list-page">
@@ -33,13 +47,19 @@ const PitchbookList = () => {
               <p className="text-muted">
                 Slides: {pitchbook.slides?.length || 0}
               </p>
-              <div className="flex gap-2 mt-3">
+              <div className="card-actions">
                 <Link
                   to={`/pitchbook/${pitchbook.id}/edit`}
                   className="btn btn-primary btn-sm"
                 >
                   Edit
                 </Link>
+                <button
+                  onClick={() => handlePromptsTextClick(pitchbook)}
+                  className="btn btn-secondary btn-sm prompts-text-btn"
+                >
+                  Prompts Text
+                </button>
               </div>
             </div>
           ))}
@@ -52,6 +72,12 @@ const PitchbookList = () => {
           </Link>
         </div>
       )}
+
+      <JsonViewerDialog
+        open={jsonDialogOpen}
+        onClose={handleJsonDialogClose}
+        pitchbook={selectedPitchbook}
+      />
     </div>
   );
 };

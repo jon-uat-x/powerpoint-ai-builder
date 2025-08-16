@@ -1,0 +1,150 @@
+{
+  "id": "example-pitchbook-001",
+  "title": "Q4 2024 Investment Review",
+  "type": "investment",
+  "created": "2025-08-16T10:00:00.000Z",
+  
+  "// HIERARCHICAL PROMPT STRUCTURE": "===================",
+  
+  "// Level 1: PITCHBOOK SCOPE": "Applies to entire presentation",
+  "pitchbookPrompt": "Focus on sustainability and ESG factors throughout",
+  "scopedPrompts": {
+    "pitchbook": {
+      "scope": "pitchbook",
+      "text": "Focus on sustainability and ESG factors throughout",
+      "appliesTo": "entire_presentation"
+    }
+  },
+  
+  "// Level 2: SECTION SCOPE": "Applies to all slides in a section",
+  "sectionPrompts": {
+    "Market Analysis": "Emphasize emerging markets and growth opportunities",
+    "Financial Performance": "Use conservative estimates and include risk factors"
+  },
+  "scopedSectionPrompts": {
+    "sections": {
+      "Market Analysis": {
+        "scope": "section",
+        "sectionName": "Market Analysis",
+        "text": "Emphasize emerging markets and growth opportunities",
+        "appliesTo": "all_slides_in_section_Market Analysis"
+      },
+      "Financial Performance": {
+        "scope": "section",
+        "sectionName": "Financial Performance",
+        "text": "Use conservative estimates and include risk factors",
+        "appliesTo": "all_slides_in_section_Financial Performance"
+      }
+    }
+  },
+  
+  "// Level 3: SLIDE SCOPE": "Applies to individual slides",
+  "slides": [
+    {
+      "slideNumber": 1,
+      "layoutName": "Title Slide",
+      "type": "title"
+    },
+    {
+      "slideNumber": 5,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "Market Analysis",
+      "slidePrompt": "Include data from Asian markets specifically",
+      "slidePromptScoped": {
+        "scope": "slide",
+        "slideNumber": 5,
+        "slideTitle": "Body Text",
+        "text": "Include data from Asian markets specifically",
+        "appliesTo": "slide_5_only"
+      }
+    },
+    {
+      "slideNumber": 8,
+      "layoutName": "Chart Slide",
+      "type": "chart",
+      "sectionTitle": "Financial Performance",
+      "slidePrompt": "Show 5-year trend with YoY comparison",
+      "slidePromptScoped": {
+        "scope": "slide",
+        "slideNumber": 8,
+        "slideTitle": "Chart Slide",
+        "text": "Show 5-year trend with YoY comparison",
+        "appliesTo": "slide_8_only"
+      }
+    }
+  ],
+  
+  "// Level 4: PLACEHOLDER SCOPE": "Applies to specific content areas",
+  "prompts": {
+    "slide_5": {
+      "12": "Create 150 words on emerging market opportunities in renewable energy"
+    },
+    "slide_8": {
+      "title_placeholder": "Q4 Financial Performance Highlights",
+      "chart_data": "Revenue growth from 2020-2024 with quarterly breakdown"
+    }
+  },
+  "scopedPlaceholderPrompts": {
+    "slide_5": {
+      "12": {
+        "scope": "placeholder",
+        "slideNumber": 5,
+        "slideTitle": "Body Text",
+        "placeholderId": "12",
+        "text": "Create 150 words on emerging market opportunities in renewable energy",
+        "appliesTo": "slide_5_placeholder_12"
+      }
+    },
+    "slide_8": {
+      "title_placeholder": {
+        "scope": "placeholder",
+        "slideNumber": 8,
+        "slideTitle": "Chart Slide",
+        "placeholderId": "title_placeholder",
+        "text": "Q4 Financial Performance Highlights",
+        "appliesTo": "slide_8_placeholder_title_placeholder"
+      },
+      "chart_data": {
+        "scope": "placeholder",
+        "slideNumber": 8,
+        "slideTitle": "Chart Slide",
+        "placeholderId": "chart_data",
+        "text": "Revenue growth from 2020-2024 with quarterly breakdown",
+        "appliesTo": "slide_8_placeholder_chart_data"
+      }
+    }
+  },
+  
+  "// PROMPT HIERARCHY SUMMARY": "===================",
+  "promptHierarchy": {
+    "description": "Prompts are applied in hierarchical order with more specific prompts taking precedence",
+    "levels": [
+      {
+        "level": 1,
+        "scope": "pitchbook",
+        "description": "Applies to entire presentation",
+        "example": "Use formal business tone throughout"
+      },
+      {
+        "level": 2,
+        "scope": "section",
+        "description": "Applies to all slides within a section",
+        "example": "Focus on Q3 results for this section"
+      },
+      {
+        "level": 3,
+        "scope": "slide",
+        "description": "Applies to a specific slide",
+        "example": "Include competitor comparison on this slide"
+      },
+      {
+        "level": 4,
+        "scope": "placeholder",
+        "description": "Applies to a specific content area on a slide",
+        "example": "Generate 200 words about market trends"
+      }
+    ],
+    "inheritance": "Each level inherits prompts from higher levels unless overridden"
+  }
+}

@@ -90,11 +90,15 @@ export const PitchbookProvider = ({ children }) => {
     }
   }, []);
 
-  // Update pitchbook prompts
+  // Update placeholder prompts with proper scoping
   const updatePrompts = useCallback(async (slideId, placeholderId, prompt) => {
     if (!currentPitchbook) return;
 
     try {
+      // Find the slide to get more context
+      const slideNumber = parseInt(slideId.replace('slide_', ''));
+      const slide = currentPitchbook.slides?.find(s => s.slideNumber === slideNumber);
+      
       const updatedPrompts = {
         ...currentPitchbook.prompts,
         [slideId]: {
@@ -103,15 +107,35 @@ export const PitchbookProvider = ({ children }) => {
         }
       };
 
+      // Create scoped prompts structure
+      const scopedPlaceholderPrompts = {
+        ...currentPitchbook.scopedPlaceholderPrompts,
+        [slideId]: {
+          ...currentPitchbook.scopedPlaceholderPrompts?.[slideId],
+          [placeholderId]: {
+            scope: 'placeholder',
+            slideNumber: slideNumber,
+            slideTitle: slide?.layoutName || slide?.type,
+            placeholderId: placeholderId,
+            text: prompt,
+            appliesTo: `slide_${slideNumber}_placeholder_${placeholderId}`
+          }
+        }
+      };
+
       const updatedPitchbook = {
         ...currentPitchbook,
-        prompts: updatedPrompts
+        prompts: updatedPrompts,
+        scopedPlaceholderPrompts
       };
 
       setCurrentPitchbook(updatedPitchbook);
 
       // Debounced save to backend
-      await pitchbookAPI.update(currentPitchbook.id, { prompts: updatedPrompts });
+      await pitchbookAPI.update(currentPitchbook.id, { 
+        prompts: updatedPrompts,
+        scopedPlaceholderPrompts 
+      });
       
       // Save to local storage as draft
       localStorage.setItem(`pitchbook_draft_${currentPitchbook.id}`, JSON.stringify(updatedPitchbook));
@@ -121,14 +145,24 @@ export const PitchbookProvider = ({ children }) => {
     }
   }, [currentPitchbook]);
 
-  // Update slide prompt
+  // Update slide prompt with proper scoping
   const updateSlidePrompt = useCallback(async (slideNumber, prompt) => {
     if (!currentPitchbook) return;
 
     try {
       const updatedSlides = currentPitchbook.slides.map(slide => {
         if (slide.slideNumber === slideNumber) {
-          return { ...slide, slidePrompt: prompt };
+          return { 
+            ...slide, 
+            slidePrompt: prompt,
+            slidePromptScoped: {
+              scope: 'slide',
+              slideNumber: slideNumber,
+              slideTitle: slide.layoutName || slide.type,
+              text: prompt,
+              appliesTo: `slide_${slideNumber}_only`
+            }
+          };
         }
         return slide;
       });
@@ -153,15 +187,35 @@ export const PitchbookProvider = ({ children }) => {
     }
   }, [currentPitchbook]);
 
-  // Update pitchbook and section prompts
+  // Update pitchbook and section prompts with proper scoping
   const updatePitchbookPrompts = useCallback(async (pitchbookId, prompts) => {
     if (!currentPitchbook || currentPitchbook.id !== pitchbookId) return;
 
     try {
+      // Structure prompts with clear scope identification
+      const scopedPrompts = {
+        ...currentPitchbook.scopedPrompts,
+        pitchbook: {
+          scope: 'pitchbook',
+          text: prompts.pitchbookPrompt,
+          appliesTo: 'entire_presentation'
+        },
+        sections: Object.entries(prompts.sectionPrompts || {}).reduce((acc, [sectionName, promptText]) => {
+          acc[sectionName] = {
+            scope: 'section',
+            sectionName: sectionName,
+            text: promptText,
+            appliesTo: `all_slides_in_section_${sectionName}`
+          };
+          return acc;
+        }, {})
+      };
+
       const updatedPitchbook = {
         ...currentPitchbook,
         pitchbookPrompt: prompts.pitchbookPrompt,
-        sectionPrompts: prompts.sectionPrompts
+        sectionPrompts: prompts.sectionPrompts,
+        scopedPrompts
       };
 
       setCurrentPitchbook(updatedPitchbook);
@@ -169,7 +223,8 @@ export const PitchbookProvider = ({ children }) => {
       // Save to backend
       await pitchbookAPI.update(pitchbookId, { 
         pitchbookPrompt: prompts.pitchbookPrompt,
-        sectionPrompts: prompts.sectionPrompts 
+        sectionPrompts: prompts.sectionPrompts,
+        scopedPrompts 
       });
       
       // Save to local storage as draft

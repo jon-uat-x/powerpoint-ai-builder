@@ -1,0 +1,65 @@
+.json-viewer-container {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  margin: 16px;
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.json-viewer-content {
+  margin: 0;
+  padding: 20px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: transparent;
+}
+
+/* Custom scrollbar for JSON viewer */
+.json-viewer-container::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.json-viewer-container::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+.json-viewer-container::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.json-viewer-container::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+.json-viewer-container::-webkit-scrollbar-corner {
+  background: var(--bg-secondary);
+}
+
+/* Syntax highlighting for JSON */
+.json-viewer-content .json-key {
+  color: var(--primary-color);
+}
+
+.json-viewer-content .json-string {
+  color: var(--success-color);
+}
+
+.json-viewer-content .json-number {
+  color: var(--info-color);
+}
+
+.json-viewer-content .json-boolean {
+  color: var(--warning-color);
+}
+
+.json-viewer-content .json-null {
+  color: var(--text-muted);
+}

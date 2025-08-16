@@ -64,6 +64,13 @@ const CreatePitchbookWizard = () => {
     }
   };
 
+  const handleCancel = () => {
+    const confirmCancel = window.confirm('Are you sure you want to cancel? All progress will be lost.');
+    if (confirmCancel) {
+      navigate('/pitchbooks');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -272,33 +279,46 @@ const CreatePitchbookWizard = () => {
           )}
 
           <div className="wizard-footer">
-            <button
-              type="button"
-              onClick={handleBack}
-              className="btn btn-secondary"
-              disabled={currentStep === 1}
-            >
-              Back
-            </button>
-            
-            {currentStep < 3 ? (
+            <div className="wizard-footer-left">
               <button
                 type="button"
-                onClick={handleNext}
-                className="btn btn-primary"
-                disabled={!isStepValid()}
+                onClick={handleCancel}
+                className="btn btn-danger btn-cancel"
+                disabled={loading}
               >
-                Next
+                Cancel
               </button>
-            ) : (
+            </div>
+            
+            <div className="wizard-footer-right">
               <button
-                type="submit"
-                className="btn btn-success"
-                disabled={loading || !isStepValid()}
+                type="button"
+                onClick={handleBack}
+                className="btn btn-secondary"
+                disabled={currentStep === 1}
               >
-                {loading ? 'Creating...' : 'Create Pitchbook'}
+                Back
               </button>
-            )}
+              
+              {currentStep < 3 ? (
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="btn btn-primary"
+                  disabled={!isStepValid()}
+                >
+                  Next
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="btn btn-success"
+                  disabled={loading || !isStepValid()}
+                >
+                  {loading ? 'Creating...' : 'Create Pitchbook'}
+                </button>
+              )}
+            </div>
           </div>
         </form>
       </div>
