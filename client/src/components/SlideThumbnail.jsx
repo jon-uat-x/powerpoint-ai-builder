@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './SlideThumbnail.css';
 
-const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, showDelete = false }) => {
+const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, onSlidePromptClick, showDelete = false }) => {
   const [hoveredPlaceholder, setHoveredPlaceholder] = useState(null);
 
   const handlePlaceholderClick = (e, placeholderId, placeholderInfo) => {
@@ -33,11 +33,11 @@ const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, showDelete = fals
         <div className="placeholder-edit-icon">
           {hasPrompt ? '✏️' : '➕'}
         </div>
+        {hasPrompt && <span className="prompt-indicator">✓</span>}
         <div className="placeholder-content">
           <span className="placeholder-label">
             {placeholder.name || placeholder.type}
           </span>
-          {hasPrompt && <span className="prompt-indicator">✓</span>}
         </div>
         {isHovered && (
           <div className="placeholder-tooltip">
@@ -53,6 +53,16 @@ const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, showDelete = fals
       <div className="thumbnail-header">
         <span className="thumbnail-number">{slide.slideNumber}</span>
         <span className="thumbnail-title">{slide.layoutName || slide.type}</span>
+        <button
+          className={`slide-prompt-btn ${slide.slidePrompt ? 'has-prompt' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onSlidePromptClick) onSlidePromptClick(slide);
+          }}
+          title={slide.slidePrompt ? 'Edit slide prompt' : 'Add slide prompt'}
+        >
+          ➕
+        </button>
       </div>
       
       <div className="thumbnail-content">
@@ -77,6 +87,7 @@ const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, showDelete = fals
       <div className="thumbnail-footer">
         <span className="prompt-count">
           {Object.keys(slide.prompts || {}).length} / {slide.layout?.placeholders?.length || 0} prompts
+          {slide.slidePrompt && ' + slide'}
         </span>
         {showDelete && (
           <button 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DraggableTemplateItem from './DraggableTemplateItem';
+import DraggableDropdown from './DraggableDropdown';
 import './RightSidebar.css';
 
 const RightSidebar = ({ layouts, onAddSlide, onToggle }) => {
@@ -17,7 +18,7 @@ const RightSidebar = ({ layouts, onAddSlide, onToggle }) => {
     <div className={`right-sidebar ${collapsed ? 'collapsed' : ''}`}>
       <div className="right-sidebar-header">
         <h2 className="right-sidebar-title">
-          {!collapsed && 'Add Slides'}
+          {!collapsed && 'Available Designs'}
         </h2>
         <button 
           className="right-sidebar-toggle"
@@ -30,11 +31,10 @@ const RightSidebar = ({ layouts, onAddSlide, onToggle }) => {
 
       {!collapsed && (
         <div className="right-sidebar-content">
-          {layouts.length > 5 && (
-            <div className="scroll-hint">
-              ↕ Scroll for more templates
-            </div>
-          )}
+          <DraggableDropdown layouts={layouts} />
+          <div className="template-section-divider">
+            <span className="divider-text">Or browse templates</span>
+          </div>
           <div className="add-slides-list">
             {layouts.map((layout, index) => (
               <DraggableTemplateItem

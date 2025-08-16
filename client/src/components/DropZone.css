@@ -1,6 +1,6 @@
 .drop-zone {
   min-height: 100px;
-  width: 228px;
+  width: 205px;
   border: 2px dashed var(--border-color);
   border-radius: 8px;
   transition: all 0.3s ease;
@@ -72,12 +72,12 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .drop-zone {
-    width: 190px;
+    width: 170px;
   }
 }
 
 @media (min-width: 1400px) {
   .drop-zone {
-    width: 247px;
+    width: 205px;
   }
 }

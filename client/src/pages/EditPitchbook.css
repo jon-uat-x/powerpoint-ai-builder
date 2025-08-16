@@ -1,5 +1,5 @@
 .edit-pitchbook-page {
-  margin-right: 320px;
+  margin-right: 256px;
   transition: var(--transition);
   min-height: 100vh;
 }
@@ -10,7 +10,31 @@
 
 /* Content adjustments */
 .content-header {
-  padding-bottom: 20px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+}
+
+.content-header > div:first-child {
+  flex: 1;
+}
+
+.content-header .content-title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: var(--text-primary);
+}
+
+.content-header .content-subtitle {
+  margin: 5px 0 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
 }
 
 .edit-pitchbook-content {
@@ -20,7 +44,7 @@
 /* Responsive adjustments */
 @media (max-width: 1400px) {
   .edit-pitchbook-page {
-    margin-right: 280px;
+    margin-right: 224px;
   }
   
   .edit-pitchbook-page.right-sidebar-collapsed {

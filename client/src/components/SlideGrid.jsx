@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import DraggableSlideThumbnail from './DraggableSlideThumbnail';
 import DropZone from './DropZone';
 import ConfirmDialog from './ConfirmDialog';
+import SlidePromptEditor from './SlidePromptEditor';
+import PitchbookPromptsEditor from './PitchbookPromptsEditor';
 import { usePitchbook } from '../contexts/PitchbookContext';
 import './SlideGrid.css';
 
@@ -10,6 +12,9 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
   const [slides, setSlides] = useState([]);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [slideToDelete, setSlideToDelete] = useState(null);
+  const [slidePromptEditorOpen, setSlidePromptEditorOpen] = useState(false);
+  const [selectedSlideForPrompt, setSelectedSlideForPrompt] = useState(null);
+  const [pitchbookPromptsOpen, setPitchbookPromptsOpen] = useState(false);
 
   useEffect(() => {
     if (pitchbookId && (!currentPitchbook || currentPitchbook.id !== pitchbookId)) {
@@ -41,13 +46,39 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
     }
   };
 
-  const moveSlide = useCallback((dragIndex, hoverIndex) => {
-    const dragSlide = slides[dragIndex];
-    const newSlides = [...slides];
-    newSlides.splice(dragIndex, 1);
-    newSlides.splice(hoverIndex, 0, dragSlide);
+  const handleSlidePromptClick = (slide) => {
+    setSelectedSlideForPrompt(slide);
+    setSlidePromptEditorOpen(true);
+  };
+
+  const handleSlidePromptClose = () => {
+    setSlidePromptEditorOpen(false);
+    setSelectedSlideForPrompt(null);
+  };
+
+  const handlePitchbookPromptsClick = () => {
+    setPitchbookPromptsOpen(true);
+  };
+
+  const handlePitchbookPromptsClose = () => {
+    setPitchbookPromptsOpen(false);
+  };
+
+  const moveSlide = useCallback((dragIndex, targetIndex) => {
+    if (dragIndex === targetIndex) return;
     
-    // Update slide numbers
+    const newSlides = [...slides];
+    const draggedSlide = newSlides[dragIndex];
+    
+    // Remove the dragged slide from its original position
+    newSlides.splice(dragIndex, 1);
+    
+    // Insert it at the target position
+    // If dragging from a lower index to higher, we need to adjust for the removal
+    const insertIndex = dragIndex < targetIndex ? targetIndex - 1 : targetIndex;
+    newSlides.splice(insertIndex, 0, draggedSlide);
+    
+    // Update slide numbers to reflect new order
     newSlides.forEach((slide, index) => {
       slide.slideNumber = index + 1;
     });
@@ -158,7 +189,6 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
     return (
       <div className="slide-grid-container">
         <div className="slide-grid-header">
-          <h2 className="slide-grid-title">{currentPitchbook.title}</h2>
           <p className="slide-grid-subtitle">
             Drag templates here to start building your pitchbook
           </p>
@@ -177,9 +207,14 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
   return (
     <div className="slide-grid-container">
       <div className="slide-grid-header">
-        <h2 className="slide-grid-title">{currentPitchbook.title}</h2>
         <p className="slide-grid-subtitle">
-          Click on placeholders to add prompts • {slides.length} slides total
+          Click on placeholders to add prompts • {slides.length} slides total • 
+          <button 
+            className="pitchbook-prompts-link"
+            onClick={handlePitchbookPromptsClick}
+          >
+            Pitchbook Prompts
+          </button>
         </p>
       </div>
 
@@ -194,6 +229,7 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
             onPlaceholderClick={(placeholderId, placeholderInfo) => 
               handlePlaceholderClick(slide.slideNumber, placeholderId, placeholderInfo)
             }
+            onSlidePromptClick={handleSlidePromptClick}
             onDelete={handleDeleteClick}
           />
         ))}
@@ -210,6 +246,18 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
         message={`Are you sure you want to delete slide ${slideToDelete?.slideNumber}? This action cannot be undone.`}
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
+      />
+      
+      <SlidePromptEditor
+        open={slidePromptEditorOpen}
+        onClose={handleSlidePromptClose}
+        slide={selectedSlideForPrompt}
+      />
+      
+      <PitchbookPromptsEditor
+        open={pitchbookPromptsOpen}
+        onClose={handlePitchbookPromptsClose}
+        pitchbook={currentPitchbook}
       />
     </div>
   );

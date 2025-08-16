@@ -16,9 +16,8 @@
   transform: scale(1.02);
 }
 
-.drop-indicator {
+.drop-indicator-line {
   position: absolute;
-  top: -15px;
   left: 0;
   right: 0;
   height: 3px;
@@ -26,6 +25,15 @@
   border-radius: 2px;
   z-index: 100;
   animation: pulse 1s infinite;
+  pointer-events: none;
+}
+
+.drop-indicator-line.before {
+  top: -2px;
+}
+
+.drop-indicator-line.after {
+  bottom: -2px;
 }
 
 @keyframes pulse {

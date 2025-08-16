@@ -224,7 +224,7 @@ textarea.form-control {
 .main-content {
   flex: 1;
   padding: 30px;
-  margin-left: 260px;
+  margin-left: 208px;
   transition: var(--transition);
 }
 

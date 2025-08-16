@@ -3,14 +3,7 @@
 }
 
 .slide-grid-header {
-  margin-bottom: 30px;
-}
-
-.slide-grid-title {
-  font-size: 1.75rem;
-  font-weight: 300;
-  color: var(--text-primary);
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .slide-grid-subtitle {
@@ -18,10 +11,27 @@
   color: var(--text-secondary);
 }
 
+.pitchbook-prompts-link {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: inherit;
+  padding: 0;
+  margin-left: 4px;
+  transition: var(--transition);
+}
+
+.pitchbook-prompts-link:hover {
+  color: var(--primary-hover);
+  text-decoration: none;
+}
+
 .slide-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 228px);
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, 205px);
+  gap: 20px;
   justify-content: start;
 }
 
@@ -45,12 +55,12 @@
 
 @media (max-width: 768px) {
   .slide-grid {
-    grid-template-columns: repeat(auto-fill, 190px);
+    grid-template-columns: repeat(auto-fill, 170px);
   }
 }
 
 @media (min-width: 1400px) {
   .slide-grid {
-    grid-template-columns: repeat(auto-fill, 247px);
+    grid-template-columns: repeat(auto-fill, 205px);
   }
 }

@@ -121,6 +121,67 @@ export const PitchbookProvider = ({ children }) => {
     }
   }, [currentPitchbook]);
 
+  // Update slide prompt
+  const updateSlidePrompt = useCallback(async (slideNumber, prompt) => {
+    if (!currentPitchbook) return;
+
+    try {
+      const updatedSlides = currentPitchbook.slides.map(slide => {
+        if (slide.slideNumber === slideNumber) {
+          return { ...slide, slidePrompt: prompt };
+        }
+        return slide;
+      });
+
+      const updatedPitchbook = {
+        ...currentPitchbook,
+        slides: updatedSlides
+      };
+
+      setCurrentPitchbook(updatedPitchbook);
+
+      // Save to backend
+      await pitchbookAPI.update(currentPitchbook.id, { slides: updatedSlides });
+      
+      // Save to local storage as draft
+      localStorage.setItem(`pitchbook_draft_${currentPitchbook.id}`, JSON.stringify(updatedPitchbook));
+      
+      setSuccess('Slide prompt saved');
+    } catch (err) {
+      setError('Failed to update slide prompt');
+      console.error(err);
+    }
+  }, [currentPitchbook]);
+
+  // Update pitchbook and section prompts
+  const updatePitchbookPrompts = useCallback(async (pitchbookId, prompts) => {
+    if (!currentPitchbook || currentPitchbook.id !== pitchbookId) return;
+
+    try {
+      const updatedPitchbook = {
+        ...currentPitchbook,
+        pitchbookPrompt: prompts.pitchbookPrompt,
+        sectionPrompts: prompts.sectionPrompts
+      };
+
+      setCurrentPitchbook(updatedPitchbook);
+
+      // Save to backend
+      await pitchbookAPI.update(pitchbookId, { 
+        pitchbookPrompt: prompts.pitchbookPrompt,
+        sectionPrompts: prompts.sectionPrompts 
+      });
+      
+      // Save to local storage as draft
+      localStorage.setItem(`pitchbook_draft_${pitchbookId}`, JSON.stringify(updatedPitchbook));
+      
+      setSuccess('Pitchbook prompts saved');
+    } catch (err) {
+      setError('Failed to update pitchbook prompts');
+      console.error(err);
+    }
+  }, [currentPitchbook]);
+
   // Generate content
   const generateContent = useCallback(async () => {
     if (!currentPitchbook) return;
@@ -183,6 +244,8 @@ export const PitchbookProvider = ({ children }) => {
     loadPitchbook,
     loadPitchbooks,
     updatePrompts,
+    updateSlidePrompt,
+    updatePitchbookPrompts,
     generateContent,
     checkGenerationStatus,
     clearError,

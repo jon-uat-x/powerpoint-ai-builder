@@ -10,9 +10,9 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
 
   const menuItems = [
     {
-      title: 'Dashboard',
-      icon: '📊',
-      path: '/'
+      title: 'Create New',
+      icon: '➕',
+      path: '/create'
     },
     {
       title: 'Pitchbooks',
@@ -20,14 +20,14 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
       path: '/pitchbooks'
     },
     {
-      title: 'Create New',
-      icon: '➕',
-      path: '/create'
-    },
-    {
       title: 'Templates',
       icon: '📋',
       path: '/templates'
+    },
+    {
+      title: 'Dashboard',
+      icon: '📊',
+      path: '/'
     }
   ];
 
