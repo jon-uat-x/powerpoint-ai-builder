@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Gemini API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #357ae8;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .info {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Direct Gemini API Test</h1>
+    <p>This tests the Gemini API directly in the browser without any framework.</p>
+    
+    <button onclick="testAPI()">Test Gemini API</button>
+    <button onclick="testWithFetch()">Test with Direct Fetch</button>
+    
+    <div id="result"></div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "@google/generative-ai": "https://esm.run/@google/generative-ai"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+        
+        const API_KEY = 'AIzaSyAIaoyackjLgToGh_okfAoyjuqkwyl1KF0';
+        
+        window.testAPI = async function() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<span class="info">Testing Gemini API...</span>\n\n';
+            
+            try {
+                const genAI = new GoogleGenerativeAI(API_KEY);
+                console.log('GoogleGenerativeAI initialized');
+                
+                // Test different model configurations
+                const modelsToTest = [
+                    { name: 'gemini-2.5-flash', config: {} },  // Gemini Flash 2.5
+                    { name: 'gemini-2.0-flash-exp', config: {} },
+                    { name: 'gemini-1.5-flash', config: {} },
+                    { name: 'gemini-1.5-pro', config: {} }
+                ];
+                
+                for (const modelTest of modelsToTest) {
+                    resultDiv.innerHTML += `<span class="info">Testing model: ${modelTest.name}...</span>\n`;
+                    
+                    try {
+                        console.log(`Testing model: ${modelTest.name}`);
+                        const model = genAI.getGenerativeModel({ 
+                            model: modelTest.name,
+                            ...modelTest.config 
+                        });
+                        
+                        const prompt = "Reply with: 'Hello! I am working!' to confirm you're connected.";
+                        console.log('Sending prompt:', prompt);
+                        
+                        const result = await model.generateContent(prompt);
+                        console.log('Got result:', result);
+                        
+                        const response = await result.response;
+                        const text = response.text();
+                        
+                        resultDiv.innerHTML += `<span class="success">✅ SUCCESS with ${modelTest.name}!</span>\n`;
+                        resultDiv.innerHTML += `Response: ${text}\n\n`;
+                        
+                        console.log(`Success with ${modelTest.name}:`, text);
+                        
+                        // If we found a working model, update the main app
+                        resultDiv.innerHTML += `<span class="success">Found working model: ${modelTest.name}</span>\n`;
+                        resultDiv.innerHTML += `<span class="info">You should update your geminiApiSimple.js to use: '${modelTest.name}'</span>\n`;
+                        
+                        return;
+                    } catch (error) {
+                        console.error(`Failed with ${modelTest.name}:`, error);
+                        resultDiv.innerHTML += `<span class="error">❌ Failed with ${modelTest.name}: ${error.message}</span>\n\n`;
+                    }
+                }
+                
+                resultDiv.innerHTML += `<span class="error">No models worked. Please check your API key.</span>\n`;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML += `<span class="error">Error: ${error.message}</span>\n`;
+                resultDiv.innerHTML += `<span class="error">Stack: ${error.stack}</span>\n`;
+            }
+        };
+        
+        window.testWithFetch = async function() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<span class="info">Testing with direct REST API call...</span>\n\n';
+            
+            const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+            
+            try {
+                const response = await fetch(`${API_ENDPOINT}?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: "Say 'Hello! The API is working!' to confirm connection."
+                            }]
+                        }]
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Direct API response:', data);
+                
+                if (response.ok) {
+                    resultDiv.innerHTML += `<span class="success">✅ Direct API call successful!</span>\n`;
+                    resultDiv.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>\n`;
+                } else {
+                    resultDiv.innerHTML += `<span class="error">❌ API Error: ${response.status}</span>\n`;
+                    resultDiv.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>\n`;
+                }
+                
+            } catch (error) {
+                console.error('Fetch error:', error);
+                resultDiv.innerHTML += `<span class="error">Fetch Error: ${error.message}</span>\n`;
+            }
+        };
+    </script>
+</body>
+</html>

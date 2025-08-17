@@ -1,0 +1,37 @@
+{
+  "timestamp": "2025-08-16T22:58:33.334Z",
+  "duration": 1897,
+  "stats": {
+    "total": 3,
+    "migrated": 3,
+    "failed": 0,
+    "skipped": 0
+  },
+  "validation": {
+    "pitchbookCount": 3,
+    "slideCount": 33
+  },
+  "backup": "C:\\Users\\jon\\powerpoint-ai-builder\\backups\\2025-08-16T22-58-31-291Z",
+  "checkpoint": {
+    "startTime": "2025-08-16T22:58:31.437Z",
+    "lastProcessedId": null,
+    "migratedItems": [
+      {
+        "id": "c4894980-b61e-4972-83a8-5be60c9b10a0",
+        "new_id": "cf7a49c6-d654-42d5-9712-e7245b262583",
+        "title": "My Pitchbook"
+      },
+      {
+        "id": "40cfb5f5-0c6c-49f4-b5c1-b71196990014",
+        "new_id": "88b3a20a-c72c-400f-88e5-aff2a169db59",
+        "title": "A new pitchbook title"
+      },
+      {
+        "id": "95964d41-89ef-4fc2-badb-03a5c33c4798",
+        "new_id": "ecd8ade4-31a2-4e6e-9a1e-940674411997",
+        "title": "Jaguar and BMW - opportunity knocks"
+      }
+    ],
+    "failedItems": []
+  }
+}

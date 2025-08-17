@@ -1,0 +1,309 @@
+{
+  "id": "c4894980-b61e-4972-83a8-5be60c9b10a0",
+  "title": "My Pitchbook",
+  "type": "standard",
+  "sections": [
+    {
+      "title": "First Chapter",
+      "numberOfSlides": 3
+    }
+  ],
+  "slides": [
+    {
+      "slideNumber": 1,
+      "layoutName": "Title Slide",
+      "type": "title",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 2,
+      "layoutName": "Contents",
+      "type": "contents",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 3,
+      "layoutName": "Legal Notice",
+      "type": "legal",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 4,
+      "layoutName": "Section Divider",
+      "type": "section-divider",
+      "sectionTitle": "First Chapter",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 5,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "First Chapter",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 6,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "First Chapter",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 7,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "First Chapter",
+      "placeholders": {}
+    }
+  ],
+  "prompts": {
+    "slide_5": {
+      "12": "Create 150 words on jaguar cars history"
+    },
+    "slide_3": {
+      "4": "Title prompt"
+    },
+    "slide_1": {
+      "4": "title prompt"
+    },
+    "slide_7": {
+      "12": "Create 200 words on why a merger would be a great idea"
+    },
+    "slide_2": {
+      "2": "Generate a compelling title for this presentation"
+    },
+    "slide_6": {
+      "12": "Create 150 words on BMW cars history"
+    }
+  },
+  "created": "2025-08-15T19:48:14.626Z",
+  "updated": "2025-08-16T01:30:18.119Z",
+  "generatedContent": {
+    "slide_5": {
+      "12": {
+        "prompt": "sssssss",
+        "response": {
+          "candidates": [
+            {
+              "content": {
+                "parts": [
+                  {
+                    "text": "Strategic recommendations focus on three pillars: digital innovation, market expansion, and operational excellence. Implementation timeline spans 18 months with clear milestones and success metrics defined for each phase."
+                  }
+                ],
+                "role": "model"
+              },
+              "finishReason": "STOP",
+              "index": 0,
+              "safetyRatings": [
+                {
+                  "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HATE_SPEECH",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HARASSMENT",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                  "probability": "NEGLIGIBLE"
+                }
+              ]
+            }
+          ],
+          "promptMetadata": {
+            "promptTokenCount": 1,
+            "candidatesTokenCount": 28,
+            "totalTokenCount": 29
+          }
+        }
+      }
+    },
+    "slide_3": {
+      "4": {
+        "prompt": "Title prompt",
+        "response": {
+          "candidates": [
+            {
+              "content": {
+                "parts": [
+                  {
+                    "text": "Growth Strategy Presentation"
+                  }
+                ],
+                "role": "model"
+              },
+              "finishReason": "STOP",
+              "index": 0,
+              "safetyRatings": [
+                {
+                  "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HATE_SPEECH",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HARASSMENT",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                  "probability": "NEGLIGIBLE"
+                }
+              ]
+            }
+          ],
+          "promptMetadata": {
+            "promptTokenCount": 2,
+            "candidatesTokenCount": 3,
+            "totalTokenCount": 5
+          }
+        }
+      }
+    },
+    "slide_1": {
+      "4": {
+        "prompt": "title prompt",
+        "response": {
+          "candidates": [
+            {
+              "content": {
+                "parts": [
+                  {
+                    "text": "Strategic Investment Review Q4 2024"
+                  }
+                ],
+                "role": "model"
+              },
+              "finishReason": "STOP",
+              "index": 0,
+              "safetyRatings": [
+                {
+                  "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HATE_SPEECH",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HARASSMENT",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                  "probability": "NEGLIGIBLE"
+                }
+              ]
+            }
+          ],
+          "promptMetadata": {
+            "promptTokenCount": 2,
+            "candidatesTokenCount": 5,
+            "totalTokenCount": 7
+          }
+        }
+      }
+    },
+    "slide_7": {
+      "12": {
+        "prompt": "xxxx",
+        "response": {
+          "candidates": [
+            {
+              "content": {
+                "parts": [
+                  {
+                    "text": "Strategic recommendations focus on three pillars: digital innovation, market expansion, and operational excellence. Implementation timeline spans 18 months with clear milestones and success metrics defined for each phase."
+                  }
+                ],
+                "role": "model"
+              },
+              "finishReason": "STOP",
+              "index": 0,
+              "safetyRatings": [
+                {
+                  "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HATE_SPEECH",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HARASSMENT",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                  "probability": "NEGLIGIBLE"
+                }
+              ]
+            }
+          ],
+          "promptMetadata": {
+            "promptTokenCount": 1,
+            "candidatesTokenCount": 28,
+            "totalTokenCount": 29
+          }
+        }
+      }
+    },
+    "slide_2": {
+      "2": {
+        "prompt": "Generate a compelling title for this presentation",
+        "response": {
+          "candidates": [
+            {
+              "content": {
+                "parts": [
+                  {
+                    "text": "Growth Strategy Presentation"
+                  }
+                ],
+                "role": "model"
+              },
+              "finishReason": "STOP",
+              "index": 0,
+              "safetyRatings": [
+                {
+                  "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HATE_SPEECH",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HARASSMENT",
+                  "probability": "NEGLIGIBLE"
+                },
+                {
+                  "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                  "probability": "NEGLIGIBLE"
+                }
+              ]
+            }
+          ],
+          "promptMetadata": {
+            "promptTokenCount": 7,
+            "candidatesTokenCount": 3,
+            "totalTokenCount": 10
+          }
+        }
+      }
+    }
+  },
+  "generatedAt": "2025-08-16T00:40:28.895Z",
+  "status": "generated",
+  "pitchbookPrompt": "Create a pitchbook describing the benefits of a merger between Jaguar and BMW.",
+  "sectionPrompts": {
+    "First Chapter": "The first chapter should contain the history of the 2 car companies and a summary of why its the best idea"
+  }
+}

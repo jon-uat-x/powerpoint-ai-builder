@@ -1,0 +1,108 @@
+{
+  "id": "40cfb5f5-0c6c-49f4-b5c1-b71196990014",
+  "title": "A new pitchbook title",
+  "type": "standard",
+  "sections": [
+    {
+      "title": "First Section",
+      "numberOfSlides": 5
+    },
+    {
+      "title": "Another Section",
+      "numberOfSlides": 3
+    }
+  ],
+  "slides": [
+    {
+      "slideNumber": 1,
+      "layoutName": "Title Slide",
+      "type": "title",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 2,
+      "layoutName": "Contents",
+      "type": "contents",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 3,
+      "layoutName": "Legal Notice",
+      "type": "legal",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 4,
+      "layoutName": "Section Divider",
+      "type": "section-divider",
+      "sectionTitle": "First Section",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 5,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "First Section",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 6,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "First Section",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 7,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "First Section",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 8,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "First Section",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 9,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "First Section",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 10,
+      "layoutName": "Section Divider",
+      "type": "section-divider",
+      "sectionTitle": "Another Section",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 11,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "Another Section",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 12,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "Another Section",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 13,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "Another Section",
+      "placeholders": {}
+    }
+  ],
+  "prompts": {},
+  "created": "2025-08-16T00:42:27.310Z",
+  "updated": "2025-08-16T00:42:27.310Z"
+}

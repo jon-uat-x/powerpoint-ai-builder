@@ -16,7 +16,14 @@
       "mcp__supabase__list_extensions",
       "mcp__supabase__apply_migration",
       "Bash(npx:*)",
-      "Bash(set SUPABASE_ACCESS_TOKEN=sbp_654254c79971c2fbc807cbf8ef7718459aeda3ac)"
+      "Bash(set SUPABASE_ACCESS_TOKEN=sbp_654254c79971c2fbc807cbf8ef7718459aeda3ac)",
+      "mcp__supabase__deploy_edge_function",
+      "Bash(npm ls:*)",
+      "Bash(node safeMigration.js)",
+      "Bash(SUPABASE_ACCESS_TOKEN=sbp_654254c79971c2fbc807cbf8ef7718459aeda3ac node safeMigration.js)",
+      "mcp__supabase__get_advisors",
+      "Bash(node:*)",
+      "mcp__supabase__execute_sql"
     ],
     "defaultMode": "acceptEdits"
   },

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import AIChatbot from './AIChatbot';
 import './Sidebar.css';
 
 const Sidebar = ({ collapsed = false, onToggle }) => {
   const [localCollapsed, setLocalCollapsed] = useState(collapsed);
+  const [chatbotOpen, setChatbotOpen] = useState(false);
   
   // Use prop if provided, otherwise use local state
   const isCollapsed = onToggle ? collapsed : localCollapsed;
@@ -28,6 +30,11 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
       title: 'Dashboard',
       icon: '📊',
       path: '/'
+    },
+    {
+      title: 'AI Chatbot',
+      icon: '🤖',
+      action: () => setChatbotOpen(true)
     }
   ];
 
@@ -55,17 +62,29 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
 
       <nav className="sidebar-nav">
         {menuItems.map((item, index) => (
-          <NavLink
-            key={index}
-            to={item.path}
-            className={({ isActive }) => 
-              `sidebar-link ${isActive ? 'active' : ''}`
-            }
-            title={isCollapsed ? item.title : ''}
-          >
-            <span className="sidebar-icon">{item.icon}</span>
-            {!isCollapsed && <span className="sidebar-text">{item.title}</span>}
-          </NavLink>
+          item.path ? (
+            <NavLink
+              key={index}
+              to={item.path}
+              className={({ isActive }) => 
+                `sidebar-link ${isActive ? 'active' : ''}`
+              }
+              title={isCollapsed ? item.title : ''}
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              {!isCollapsed && <span className="sidebar-text">{item.title}</span>}
+            </NavLink>
+          ) : (
+            <button
+              key={index}
+              onClick={item.action}
+              className="sidebar-link sidebar-button"
+              title={isCollapsed ? item.title : ''}
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              {!isCollapsed && <span className="sidebar-text">{item.title}</span>}
+            </button>
+          )
         ))}
       </nav>
 
@@ -77,6 +96,11 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
           </div>
         )}
       </div>
+      
+      <AIChatbot 
+        open={chatbotOpen} 
+        onClose={() => setChatbotOpen(false)} 
+      />
     </div>
   );
 };

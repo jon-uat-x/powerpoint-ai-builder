@@ -1,0 +1,237 @@
+{
+  "id": "95964d41-89ef-4fc2-badb-03a5c33c4798",
+  "title": "Jaguar and BMW - opportunity knocks",
+  "type": "standard",
+  "sections": [
+    {
+      "title": "Jaguage History",
+      "numberOfSlides": 2
+    },
+    {
+      "title": "BMW History",
+      "numberOfSlides": 2
+    },
+    {
+      "title": "Benefits of Merger",
+      "numberOfSlides": 1
+    },
+    {
+      "title": "Dis-benefits of merger",
+      "numberOfSlides": 1
+    }
+  ],
+  "slides": [
+    {
+      "slideNumber": 1,
+      "layoutName": "Title Slide",
+      "type": "title",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 2,
+      "layoutName": "Contents",
+      "type": "contents",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 3,
+      "layoutName": "Legal Notice",
+      "type": "legal",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 4,
+      "layoutName": "Section Divider",
+      "type": "section-divider",
+      "sectionTitle": "Jaguage History",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 5,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "Jaguage History",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 6,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "Jaguage History",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 7,
+      "layoutName": "Section Divider",
+      "type": "section-divider",
+      "sectionTitle": "BMW History",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 8,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "BMW History",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 9,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "BMW History",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 10,
+      "layoutName": "Section Divider",
+      "type": "section-divider",
+      "sectionTitle": "Benefits of Merger",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 11,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "Benefits of Merger",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 12,
+      "layoutName": "Section Divider",
+      "type": "section-divider",
+      "sectionTitle": "Dis-benefits of merger",
+      "placeholders": {}
+    },
+    {
+      "slideNumber": 13,
+      "layoutName": "Body Text",
+      "type": "body",
+      "sectionTitle": "Dis-benefits of merger",
+      "placeholders": {}
+    }
+  ],
+  "prompts": {
+    "slide_5": {
+      "12": "Add 300 words briefly describing jaguar cars history"
+    },
+    "slide_6": {
+      "12": "Highlight recent struggles at Jaguar including the move to electrification"
+    },
+    "slide_8": {
+      "12": "300 words on BMW history including recover from post war trauma."
+    },
+    "slide_9": {
+      "12": "Highlight recent sales successes and the move to electrification"
+    },
+    "slide_11": {
+      "12": "5 brief points outlining the benefits of the merger"
+    },
+    "slide_13": {
+      "12": "5 points about the challenges and problems with such a merger"
+    }
+  },
+  "created": "2025-08-16T01:55:49.945Z",
+  "updated": "2025-08-16T02:03:05.412Z",
+  "pitchbookPrompt": "Be strict about sources and citations and don't add any data that is not grounded in fact. This pitchbook is about the potential benefits and dis-benefits of a Jaguar and BMW merger. The intended audience is financial services and senior management.",
+  "sectionPrompts": {
+    "Jaguage History": "A brief history of Jaguar cars in less than 200 words, highlighting successes and high points",
+    "BMW History": "A brief history of BMW cars in less than 200 words, highlighting successes and high points, fccus on post war recovery.",
+    "Benefits of Merger": "Identify 5 key benefits",
+    "Dis-benefits of merger": "Identify 5 challenges to this merger"
+  },
+  "scopedPrompts": {
+    "pitchbook": {
+      "scope": "pitchbook",
+      "text": "Be strict about sources and citations and don't add any data that is not grounded in fact. This pitchbook is about the potential benefits and dis-benefits of a Jaguar and BMW merger. The intended audience is financial services and senior management.",
+      "appliesTo": "entire_presentation"
+    },
+    "sections": {
+      "Jaguage History": {
+        "scope": "section",
+        "sectionName": "Jaguage History",
+        "text": "A brief history of Jaguar cars in less than 200 words, highlighting successes and high points",
+        "appliesTo": "all_slides_in_section_Jaguage History"
+      },
+      "BMW History": {
+        "scope": "section",
+        "sectionName": "BMW History",
+        "text": "A brief history of BMW cars in less than 200 words, highlighting successes and high points, fccus on post war recovery.",
+        "appliesTo": "all_slides_in_section_BMW History"
+      },
+      "Benefits of Merger": {
+        "scope": "section",
+        "sectionName": "Benefits of Merger",
+        "text": "Identify 5 key benefits",
+        "appliesTo": "all_slides_in_section_Benefits of Merger"
+      },
+      "Dis-benefits of merger": {
+        "scope": "section",
+        "sectionName": "Dis-benefits of merger",
+        "text": "Identify 5 challenges to this merger",
+        "appliesTo": "all_slides_in_section_Dis-benefits of merger"
+      }
+    }
+  },
+  "scopedPlaceholderPrompts": {
+    "slide_5": {
+      "12": {
+        "scope": "placeholder",
+        "slideNumber": 5,
+        "slideTitle": "Body Text",
+        "placeholderId": "12",
+        "text": "Add 300 words briefly describing jaguar cars history",
+        "appliesTo": "slide_5_placeholder_12"
+      }
+    },
+    "slide_6": {
+      "12": {
+        "scope": "placeholder",
+        "slideNumber": 6,
+        "slideTitle": "Body Text",
+        "placeholderId": "12",
+        "text": "Highlight recent struggles at Jaguar including the move to electrification",
+        "appliesTo": "slide_6_placeholder_12"
+      }
+    },
+    "slide_8": {
+      "12": {
+        "scope": "placeholder",
+        "slideNumber": 8,
+        "slideTitle": "Body Text",
+        "placeholderId": "12",
+        "text": "300 words on BMW history including recover from post war trauma.",
+        "appliesTo": "slide_8_placeholder_12"
+      }
+    },
+    "slide_9": {
+      "12": {
+        "scope": "placeholder",
+        "slideNumber": 9,
+        "slideTitle": "Body Text",
+        "placeholderId": "12",
+        "text": "Highlight recent sales successes and the move to electrification",
+        "appliesTo": "slide_9_placeholder_12"
+      }
+    },
+    "slide_11": {
+      "12": {
+        "scope": "placeholder",
+        "slideNumber": 11,
+        "slideTitle": "Body Text",
+        "placeholderId": "12",
+        "text": "5 brief points outlining the benefits of the merger",
+        "appliesTo": "slide_11_placeholder_12"
+      }
+    },
+    "slide_13": {
+      "12": {
+        "scope": "placeholder",
+        "slideNumber": 13,
+        "slideTitle": "Body Text",
+        "placeholderId": "12",
+        "text": "5 points about the challenges and problems with such a merger",
+        "appliesTo": "slide_13_placeholder_12"
+      }
+    }
+  }
+}
