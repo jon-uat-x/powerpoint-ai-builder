@@ -4,6 +4,7 @@ import DropZone from './DropZone';
 import ConfirmDialog from './ConfirmDialog';
 import SlidePromptEditor from './SlidePromptEditor';
 import PitchbookPromptsEditor from './PitchbookPromptsEditor';
+import ContentGenerator from './ContentGenerator';
 import { usePitchbook } from '../contexts/PitchbookContext';
 import './SlideGrid.css';
 
@@ -15,6 +16,7 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
   const [slidePromptEditorOpen, setSlidePromptEditorOpen] = useState(false);
   const [selectedSlideForPrompt, setSelectedSlideForPrompt] = useState(null);
   const [pitchbookPromptsOpen, setPitchbookPromptsOpen] = useState(false);
+  const [contentGeneratorOpen, setContentGeneratorOpen] = useState(false);
 
   useEffect(() => {
     if (pitchbookId && (!currentPitchbook || currentPitchbook.id !== pitchbookId)) {
@@ -62,6 +64,22 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
 
   const handlePitchbookPromptsClose = () => {
     setPitchbookPromptsOpen(false);
+  };
+
+  const handleGenerateContentClick = () => {
+    setContentGeneratorOpen(true);
+  };
+
+  const handleGenerateContentClose = () => {
+    setContentGeneratorOpen(false);
+  };
+
+  const handleContentGenerated = (generatedContent) => {
+    // Content has been generated and saved
+    // Refresh the pitchbook to show updated content
+    if (pitchbookId) {
+      loadPitchbook(pitchbookId);
+    }
   };
 
   const moveSlide = useCallback((dragIndex, targetIndex) => {
@@ -215,6 +233,13 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
           >
             Pitchbook Prompts
           </button>
+          {' • '}
+          <button 
+            className="generate-content-link"
+            onClick={handleGenerateContentClick}
+          >
+            🤖 Generate Content
+          </button>
         </p>
       </div>
 
@@ -258,6 +283,13 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
         open={pitchbookPromptsOpen}
         onClose={handlePitchbookPromptsClose}
         pitchbook={currentPitchbook}
+      />
+      
+      <ContentGenerator
+        pitchbook={currentPitchbook}
+        open={contentGeneratorOpen}
+        onClose={handleGenerateContentClose}
+        onGenerated={handleContentGenerated}
       />
     </div>
   );
