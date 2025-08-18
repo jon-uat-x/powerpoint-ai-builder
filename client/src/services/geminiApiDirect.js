@@ -1,8 +1,11 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Direct implementation that mirrors the working test page
-const API_KEY = 'AIzaSyAIaoyackjLgToGh_okfAoyjuqkwyl1KF0';
-const genAI = new GoogleGenerativeAI(API_KEY);
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+if (!API_KEY) {
+  console.error('VITE_GEMINI_API_KEY is not set in environment variables');
+}
+const genAI = new GoogleGenerativeAI(API_KEY || '');
 
 // Use Gemini Flash 2.5 model
 const model = genAI.getGenerativeModel({ 

@@ -1,10 +1,14 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Initialize Gemini API with your API key
-const API_KEY = 'AIzaSyAIaoyackjLgToGh_okfAoyjuqkwyl1KF0';
-console.log('Initializing Gemini API with key:', API_KEY.substring(0, 15) + '...');
+// Initialize Gemini API with environment variable
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+if (!API_KEY) {
+  console.error('VITE_GEMINI_API_KEY is not set in environment variables');
+} else {
+  console.log('Initializing Gemini API with key:', API_KEY.substring(0, 15) + '...');
+}
 
-const genAI = new GoogleGenerativeAI(API_KEY);
+const genAI = new GoogleGenerativeAI(API_KEY || '');
 
 // Test function to verify API connection
 export async function testConnection() {

@@ -1,9 +1,13 @@
 // Direct test of Gemini API
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const API_KEY = 'AIzaSyAIaoyackjLgToGh_okfAoyjuqkwyl1KF0';
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 async function testGeminiAPI() {
+  if (!API_KEY) {
+    console.error('VITE_GEMINI_API_KEY is not set in environment variables');
+    return;
+  }
   console.log('Testing Gemini API with key:', API_KEY.substring(0, 10) + '...');
   
   const genAI = new GoogleGenerativeAI(API_KEY);
