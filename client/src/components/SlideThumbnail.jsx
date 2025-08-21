@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
 import './SlideThumbnail.css';
 
 const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, onSlidePromptClick, showDelete = false }) => {
@@ -31,9 +35,9 @@ const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, onSlidePromptClic
         title={hasPrompt ? 'Edit prompt' : 'Add prompt'}
       >
         <div className="placeholder-edit-icon">
-          {hasPrompt ? '✏️' : '➕'}
+          {hasPrompt ? <EditNoteIcon sx={{ fontSize: 16 }} /> : <AddIcon sx={{ fontSize: 16 }} />}
         </div>
-        {hasPrompt && <span className="prompt-indicator">✓</span>}
+        {hasPrompt && <span className="prompt-indicator"><CheckCircleOutlineIcon sx={{ fontSize: 14 }} /></span>}
         <div className="placeholder-content">
           <span className="placeholder-label">
             {placeholder.name || placeholder.type}
@@ -61,7 +65,7 @@ const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, onSlidePromptClic
           }}
           title={slide.slidePrompt ? 'Edit slide prompt' : 'Add slide prompt'}
         >
-          ➕
+          <AddIcon sx={{ fontSize: 18 }} />
         </button>
       </div>
       
@@ -98,7 +102,7 @@ const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, onSlidePromptClic
             }}
             title="Delete slide"
           >
-            ❌
+            <DeleteIcon sx={{ fontSize: 18 }} />
           </button>
         )}
       </div>

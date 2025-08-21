@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import AIChatbot from './AIChatbot';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import DescriptionIcon from '@mui/icons-material/Description';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import './Sidebar.css';
 
 const Sidebar = ({ collapsed = false, onToggle }) => {
@@ -13,27 +20,27 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
   const menuItems = [
     {
       title: 'Create New',
-      icon: '➕',
+      icon: <AddCircleOutlineIcon />,
       path: '/create'
     },
     {
       title: 'Pitchbooks',
-      icon: '📚',
+      icon: <LibraryBooksIcon />,
       path: '/pitchbooks'
     },
     {
       title: 'Templates',
-      icon: '📋',
+      icon: <DescriptionIcon />,
       path: '/templates'
     },
     {
       title: 'Dashboard',
-      icon: '📊',
+      icon: <DashboardIcon />,
       path: '/'
     },
     {
-      title: 'AI Chatbot',
-      icon: '🤖',
+      title: 'AI Assistant',
+      icon: <AutoAwesomeIcon />,
       action: () => setChatbotOpen(true)
     }
   ];
@@ -56,7 +63,7 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
           className="sidebar-toggle"
           onClick={handleToggle}
         >
-          {isCollapsed ? '→' : '←'}
+          {isCollapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </button>
       </div>
 

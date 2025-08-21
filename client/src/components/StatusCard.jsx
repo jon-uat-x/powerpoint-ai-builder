@@ -1,4 +1,9 @@
 import React, { useEffect } from 'react';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import WarningIcon from '@mui/icons-material/Warning';
+import InfoIcon from '@mui/icons-material/Info';
+import CloseIcon from '@mui/icons-material/Close';
 import './StatusCard.css';
 
 const StatusCard = ({ type = 'info', message, onClose, autoClose = 5000 }) => {
@@ -14,14 +19,14 @@ const StatusCard = ({ type = 'info', message, onClose, autoClose = 5000 }) => {
   const getIcon = () => {
     switch (type) {
       case 'success':
-        return '✓';
+        return <CheckCircleIcon sx={{ fontSize: 20 }} />;
       case 'error':
-        return '✕';
+        return <CancelIcon sx={{ fontSize: 20 }} />;
       case 'warning':
-        return '⚠';
+        return <WarningIcon sx={{ fontSize: 20 }} />;
       case 'info':
       default:
-        return 'ℹ';
+        return <InfoIcon sx={{ fontSize: 20 }} />;
     }
   };
 
@@ -31,7 +36,7 @@ const StatusCard = ({ type = 'info', message, onClose, autoClose = 5000 }) => {
       <span className="status-message">{message}</span>
       {onClose && (
         <button className="status-close" onClick={onClose}>
-          ✕
+          <CloseIcon sx={{ fontSize: 16 }} />
         </button>
       )}
     </div>

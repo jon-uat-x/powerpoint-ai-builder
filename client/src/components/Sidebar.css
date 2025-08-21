@@ -50,6 +50,11 @@
   flex-shrink: 0;
 }
 
+.sidebar-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
 .sidebar-toggle:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
@@ -83,8 +88,16 @@
   color: var(--text-primary);
 }
 
+.sidebar-link:hover .sidebar-icon {
+  color: var(--text-primary);
+}
+
 .sidebar-link.active {
   background: var(--bg-hover);
+  color: var(--primary-color);
+}
+
+.sidebar-link.active .sidebar-icon {
   color: var(--primary-color);
 }
 
@@ -115,13 +128,13 @@
 }
 
 .sidebar-icon {
-  font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 24px;
   height: 24px;
   flex-shrink: 0;
+  color: var(--text-secondary);
 }
 
 .sidebar-text {

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import aiContentGenerator from '../services/aiContentGenerator';
 import promptEnhancer from '../services/promptEnhancer';
 import { usePitchbook } from '../contexts/PitchbookContext';
+import CloseIcon from '@mui/icons-material/Close';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import './ContentGenerator.css';
 
 const ContentGenerator = ({ pitchbook, open, onClose, onGenerated }) => {
@@ -195,7 +197,7 @@ const ContentGenerator = ({ pitchbook, open, onClose, onGenerated }) => {
       <div className="content-generator-dialog">
         <div className="generator-header">
           <h2>AI Content Generator</h2>
-          <button className="close-btn" onClick={onClose}>✕</button>
+          <button className="close-btn" onClick={onClose}><CloseIcon /></button>
         </div>
 
         <div className="generator-body">
@@ -351,7 +353,7 @@ const ContentGenerator = ({ pitchbook, open, onClose, onGenerated }) => {
                           </div>
                         ) : (
                           <div className="error-message">
-                            ❌ Failed: {result.error}
+                            <ErrorOutlineIcon sx={{ fontSize: 16, marginRight: 0.5, verticalAlign: 'middle' }} /> Failed: {result.error}
                           </div>
                         )}
                       </div>
@@ -365,7 +367,7 @@ const ContentGenerator = ({ pitchbook, open, onClose, onGenerated }) => {
           {/* Error Display */}
           {error && (
             <div className="error-section">
-              <p className="error-message">❌ {error}</p>
+              <p className="error-message"><ErrorOutlineIcon sx={{ fontSize: 16, marginRight: 0.5, verticalAlign: 'middle' }} /> {error}</p>
             </div>
           )}
         </div>

@@ -6,6 +6,7 @@ import SlidePromptEditor from './SlidePromptEditor';
 import PitchbookPromptsEditor from './PitchbookPromptsEditor';
 import ContentGenerator from './ContentGenerator';
 import { usePitchbook } from '../contexts/PitchbookContext';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import './SlideGrid.css';
 
 const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
@@ -238,7 +239,7 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
             className="generate-content-link"
             onClick={handleGenerateContentClick}
           >
-            🤖 Generate Content
+            <><AutoAwesomeIcon sx={{ fontSize: 16, marginRight: 0.5, verticalAlign: 'middle' }} /> Generate Content</>
           </button>
         </p>
       </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { geminiAPI } from '../services/geminiApiSimple';  // Using geminiApiSimple with gemini-2.5-flash
+import CloseIcon from '@mui/icons-material/Close';
 import './AIChatbot.css';
 
 const AIChatbot = ({ open, onClose }) => {
@@ -232,7 +233,7 @@ const AIChatbot = ({ open, onClose }) => {
               onClick={onClose}
               title="Close"
             >
-              ✕
+              <CloseIcon />
             </button>
           </div>
         </div>
