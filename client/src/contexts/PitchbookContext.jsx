@@ -187,6 +187,92 @@ export const PitchbookProvider = ({ children }) => {
     }
   }, [currentPitchbook]);
 
+  // Update all slides at once (for reordering, adding, deleting)
+  const updateSlides = useCallback(async (pitchbookId, slides) => {
+    if (!currentPitchbook || currentPitchbook.id !== pitchbookId) return;
+
+    try {
+      // Update local state immediately for responsiveness
+      const updatedPitchbook = {
+        ...currentPitchbook,
+        slides: slides
+      };
+      
+      setCurrentPitchbook(updatedPitchbook);
+
+      // Save to backend
+      await pitchbookAPI.update(pitchbookId, { 
+        slides: slides.map(slide => ({
+          slideNumber: slide.slideNumber,
+          layoutName: slide.layoutName,
+          layoutData: slide.layout || null,
+          type: slide.type || slide.layout?.type || 'body',
+          sectionTitle: slide.sectionTitle || null,
+          prompts: slide.prompts || {},
+          slidePrompt: slide.slidePrompt || null
+        }))
+      });
+      
+      // Save to local storage as draft
+      localStorage.setItem(`pitchbook_draft_${pitchbookId}`, JSON.stringify(updatedPitchbook));
+      
+      setSuccess('Changes saved');
+    } catch (err) {
+      setError('Failed to save changes');
+      console.error(err);
+      // Revert on error
+      setCurrentPitchbook(currentPitchbook);
+    }
+  }, [currentPitchbook]);
+
+  // Update slide order with automatic section detection
+  const updateSlideOrder = useCallback(async (pitchbookId, slides) => {
+    if (!currentPitchbook || currentPitchbook.id !== pitchbookId) return;
+
+    try {
+      // Detect and update section titles based on position
+      const slidesWithSections = slides.map((slide, index) => {
+        // If slide already has a section, keep it unless we need to update
+        let sectionTitle = slide.sectionTitle;
+        
+        // If this slide was moved, detect new section
+        if (slide.movedFrom !== undefined) {
+          // Look for section from previous slides
+          for (let i = index - 1; i >= 0; i--) {
+            if (slides[i].sectionTitle && !slides[i].movedFrom) {
+              sectionTitle = slides[i].sectionTitle;
+              break;
+            }
+          }
+          
+          // If no section found before, check after
+          if (!sectionTitle && index < slides.length - 1) {
+            for (let i = index + 1; i < slides.length; i++) {
+              if (slides[i].sectionTitle && !slides[i].movedFrom) {
+                sectionTitle = slides[i].sectionTitle;
+                break;
+              }
+            }
+          }
+          
+          // Clean up the movedFrom flag
+          delete slide.movedFrom;
+        }
+        
+        return {
+          ...slide,
+          sectionTitle
+        };
+      });
+
+      // Update using the main updateSlides function
+      await updateSlides(pitchbookId, slidesWithSections);
+    } catch (err) {
+      setError('Failed to update slide order');
+      console.error(err);
+    }
+  }, [currentPitchbook, updateSlides]);
+
   // Update section title
   const updateSectionTitle = useCallback(async (pitchbookId, oldTitle, newTitle) => {
     if (!currentPitchbook || currentPitchbook.id !== pitchbookId) return;
@@ -333,6 +419,8 @@ export const PitchbookProvider = ({ children }) => {
     loadPitchbooks,
     updatePrompts,
     updateSlidePrompt,
+    updateSlides,
+    updateSlideOrder,
     updateSectionTitle,
     updatePitchbookPrompts,
     generateContent,

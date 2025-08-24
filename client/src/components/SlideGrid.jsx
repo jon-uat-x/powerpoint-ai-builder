@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import DraggableSlideThumbnail from './DraggableSlideThumbnail';
 import DropZone from './DropZone';
 import ConfirmDialog from './ConfirmDialog';
@@ -10,7 +10,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import './SlideGrid.css';
 
 const SlideGrid = ({ pitchbookId }) => {
-  const { currentPitchbook, loadPitchbook, layouts, loading } = usePitchbook();
+  const { currentPitchbook, loadPitchbook, layouts, loading, updateSlides, updateSlideOrder, success, error } = usePitchbook();
   const [slides, setSlides] = useState([]);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [slideToDelete, setSlideToDelete] = useState(null);
@@ -18,6 +18,8 @@ const SlideGrid = ({ pitchbookId }) => {
   const [selectedSlideForPrompt, setSelectedSlideForPrompt] = useState(null);
   const [pitchbookPromptsOpen, setPitchbookPromptsOpen] = useState(false);
   const [contentGeneratorOpen, setContentGeneratorOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const saveTimeoutRef = useRef(null);
 
   useEffect(() => {
     if (pitchbookId && (!currentPitchbook || currentPitchbook.id !== pitchbookId)) {
@@ -29,13 +31,21 @@ const SlideGrid = ({ pitchbookId }) => {
     if (currentPitchbook && currentPitchbook.slides) {
       // Map slides with their layout information
       const slidesWithLayouts = currentPitchbook.slides.map(slide => {
-        const layout = layouts.find(l => 
-          l.name?.toLowerCase() === slide.layoutName?.toLowerCase() ||
-          l.name?.toLowerCase().includes(slide.type?.toLowerCase())
-        );
+        // First try to use saved layout data
+        let layout = slide.layoutData || slide.layout;
+        
+        // If no saved layout data, try to find it from available layouts
+        if (!layout || !layout.placeholders) {
+          layout = layouts.find(l => 
+            l.name?.toLowerCase() === slide.layoutName?.toLowerCase() ||
+            l.name?.toLowerCase().includes(slide.type?.toLowerCase())
+          );
+        }
+        
         return {
           ...slide,
           layout: layout || { name: slide.layoutName, placeholders: [] },
+          layoutData: layout,  // Ensure layoutData is preserved
           prompts: currentPitchbook.prompts?.[`slide_${slide.slideNumber}`] || {}
         };
       });
@@ -81,11 +91,25 @@ const SlideGrid = ({ pitchbookId }) => {
     }
   };
 
-  const moveSlide = useCallback((dragIndex, targetIndex) => {
+  // Debounced save function
+  const debouncedSave = useCallback((saveFunction) => {
+    setIsSaving(true);
+    
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    
+    saveTimeoutRef.current = setTimeout(async () => {
+      await saveFunction();
+      setIsSaving(false);
+    }, 500);
+  }, []);
+
+  const moveSlide = useCallback(async (dragIndex, targetIndex) => {
     if (dragIndex === targetIndex) return;
     
     const newSlides = [...slides];
-    const draggedSlide = newSlides[dragIndex];
+    const draggedSlide = { ...newSlides[dragIndex], movedFrom: dragIndex };
     
     // Remove the dragged slide from its original position
     newSlides.splice(dragIndex, 1);
@@ -101,17 +125,35 @@ const SlideGrid = ({ pitchbookId }) => {
     });
     
     setSlides(newSlides);
-    // TODO: Update pitchbook in backend
-  }, [slides]);
+    
+    // Auto-save to backend with section detection (debounced)
+    if (pitchbookId) {
+      debouncedSave(() => updateSlideOrder(pitchbookId, newSlides));
+    }
+  }, [slides, pitchbookId, updateSlideOrder, debouncedSave]);
 
-  const insertSlide = useCallback((layout, position) => {
+  const insertSlide = useCallback(async (layout, position) => {
+    // Detect section for the new slide
+    let sectionTitle = null;
+    
+    // Look for section from previous slides
+    if (position > 0 && slides[position - 1]) {
+      sectionTitle = slides[position - 1].sectionTitle;
+    } else if (position < slides.length && slides[position]) {
+      // If inserting at beginning, use next slide's section
+      sectionTitle = slides[position].sectionTitle;
+    }
+    
     const newSlide = {
       slideNumber: position + 1,
       layoutName: layout.name,
-      layout: layout,
+      layout: layout,  // Save complete layout object
+      layoutData: layout,  // Ensure layout data is saved
       type: layout.type || 'body',
+      sectionTitle: sectionTitle,
       placeholders: {},
-      prompts: {}
+      prompts: {},
+      slidePrompt: null
     };
     
     const newSlides = [...slides];
@@ -123,15 +165,21 @@ const SlideGrid = ({ pitchbookId }) => {
     });
     
     setSlides(newSlides);
-    // TODO: Update pitchbook in backend
-  }, [slides]);
+    
+    // Auto-save to backend (immediate for new slides)
+    if (pitchbookId) {
+      setIsSaving(true);
+      await updateSlides(pitchbookId, newSlides);
+      setIsSaving(false);
+    }
+  }, [slides, pitchbookId, updateSlides]);
 
   const handleDeleteClick = (slide) => {
     setSlideToDelete(slide);
     setDeleteConfirmOpen(true);
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (slideToDelete) {
       const newSlides = slides.filter(s => s.slideNumber !== slideToDelete.slideNumber);
       
@@ -141,7 +189,13 @@ const SlideGrid = ({ pitchbookId }) => {
       });
       
       setSlides(newSlides);
-      // TODO: Update pitchbook in backend
+      
+      // Auto-save to backend (immediate for deletions)
+      if (pitchbookId) {
+        setIsSaving(true);
+        await updateSlides(pitchbookId, newSlides);
+        setIsSaving(false);
+      }
     }
     setDeleteConfirmOpen(false);
     setSlideToDelete(null);
@@ -239,6 +293,14 @@ const SlideGrid = ({ pitchbookId }) => {
           >
             <><AutoAwesomeIcon sx={{ fontSize: 16, marginRight: 0.5, verticalAlign: 'middle' }} /> Generate Content</>
           </button>
+          {isSaving && (
+            <>
+              {' • '}
+              <span style={{ color: 'var(--success-color)', fontSize: '0.875rem' }}>
+                Saving changes...
+              </span>
+            </>
+          )}
         </p>
       </div>
 

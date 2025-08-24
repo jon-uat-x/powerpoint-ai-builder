@@ -84,8 +84,13 @@ export const pitchbookAPI = {
         id: s.id,
         slideNumber: s.slide_number,
         layoutName: s.layout_name,
+        layoutData: s.layout_data,  // Include saved layout data
+        layout: s.layout_data,  // For compatibility
         slideType: s.slide_type,
+        type: s.slide_type || s.layout_data?.type || 'body',
+        sectionTitle: s.section_title,
         prompt: s.slide_prompt,
+        slidePrompt: s.slide_prompt,
         promptScoped: s.slide_prompt_scoped,
         content: s.content,
         notes: s.notes,
@@ -95,6 +100,10 @@ export const pitchbookAPI = {
             prompt: pp.prompt,
             generatedContent: pp.generated_content
           };
+          return acc;
+        }, {}),
+        prompts: s.placeholder_prompts?.reduce((acc, pp) => {
+          acc[pp.placeholder_id] = pp.prompt;
           return acc;
         }, {})
       })) || []
@@ -154,6 +163,68 @@ export const pitchbookAPI = {
     if (data.prompts !== undefined) {
       updates.pitchbook_prompt = data.prompts.pitchbookPrompt;
       updates.scoped_prompts = data.prompts.scopedPrompts;
+    }
+
+    // Handle slides update
+    if (data.slides !== undefined) {
+      // Get existing slides to determine which are new
+      const { data: existingSlides } = await supabase
+        .from('slides')
+        .select('id, slide_number')
+        .eq('pitchbook_id', id);
+      
+      const existingSlideNumbers = new Set(existingSlides?.map(s => s.slide_number) || []);
+      
+      // Update or insert slides
+      for (const slide of data.slides) {
+        const slideData = {
+          pitchbook_id: id,
+          slide_number: slide.slideNumber,
+          layout_name: slide.layoutName,
+          layout_data: slide.layoutData || slide.layout || null,
+          slide_type: slide.type || slide.slideType || 'body',
+          section_title: slide.sectionTitle || null,
+          slide_prompt: slide.slidePrompt || slide.prompt || null
+        };
+        
+        if (existingSlideNumbers.has(slide.slideNumber)) {
+          // Update existing slide
+          const { error: slideError } = await supabase
+            .from('slides')
+            .update(slideData)
+            .eq('pitchbook_id', id)
+            .eq('slide_number', slide.slideNumber);
+            
+          if (slideError) {
+            console.error('Error updating slide:', slideError);
+          }
+        } else {
+          // Insert new slide
+          const { error: slideError } = await supabase
+            .from('slides')
+            .insert(slideData);
+            
+          if (slideError) {
+            console.error('Error inserting slide:', slideError);
+          }
+        }
+      }
+      
+      // Delete slides that are no longer in the array
+      const newSlideNumbers = new Set(data.slides.map(s => s.slideNumber));
+      const slidesToDelete = existingSlides?.filter(s => !newSlideNumbers.has(s.slide_number)) || [];
+      
+      if (slidesToDelete.length > 0) {
+        const { error: deleteError } = await supabase
+          .from('slides')
+          .delete()
+          .eq('pitchbook_id', id)
+          .in('slide_number', slidesToDelete.map(s => s.slide_number));
+          
+        if (deleteError) {
+          console.error('Error deleting slides:', deleteError);
+        }
+      }
     }
 
     const { data: updated, error } = await supabase
