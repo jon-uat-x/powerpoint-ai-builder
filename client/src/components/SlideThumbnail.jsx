@@ -1,53 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import EditNoteIcon from '@mui/icons-material/EditNote';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './SlideThumbnail.css';
 
-const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, onSlidePromptClick, showDelete = false }) => {
-  const [hoveredPlaceholder, setHoveredPlaceholder] = useState(null);
-
-  const handlePlaceholderClick = (e, placeholderId, placeholderInfo) => {
-    e.stopPropagation();
-    if (onPlaceholderClick) {
-      onPlaceholderClick(placeholderId, placeholderInfo);
-    }
-  };
-
+const SlideThumbnail = ({ slide, onDelete, onSlidePromptClick, showDelete = false }) => {
   const renderPlaceholder = (placeholder) => {
     const hasPrompt = slide.prompts && slide.prompts[placeholder.id];
-    const isHovered = hoveredPlaceholder === placeholder.id;
 
     return (
       <div
         key={placeholder.id}
-        className={`thumbnail-placeholder ${placeholder.type} ${hasPrompt ? 'has-prompt' : ''} ${isHovered ? 'hovered' : ''}`}
+        className={`thumbnail-placeholder ${placeholder.type} ${hasPrompt ? 'has-prompt' : ''}`}
         style={{
           left: `${(placeholder.x / 1024) * 100}%`,
           top: `${(placeholder.y / 768) * 100}%`,
           width: `${(placeholder.width / 1024) * 100}%`,
           height: `${(placeholder.height / 768) * 100}%`
         }}
-        onMouseEnter={() => setHoveredPlaceholder(placeholder.id)}
-        onMouseLeave={() => setHoveredPlaceholder(null)}
-        onClick={(e) => handlePlaceholderClick(e, placeholder.id, placeholder)}
-        title={hasPrompt ? 'Edit prompt' : 'Add prompt'}
       >
-        <div className="placeholder-edit-icon">
-          {hasPrompt ? <EditNoteIcon sx={{ fontSize: 16 }} /> : <AddIcon sx={{ fontSize: 16 }} />}
-        </div>
         {hasPrompt && <span className="prompt-indicator"><CheckCircleOutlineIcon sx={{ fontSize: 14 }} /></span>}
         <div className="placeholder-content">
           <span className="placeholder-label">
             {placeholder.name || placeholder.type}
           </span>
         </div>
-        {isHovered && (
-          <div className="placeholder-tooltip">
-            {hasPrompt ? 'Click to edit prompt' : 'Click to add prompt'}
-          </div>
-        )}
       </div>
     );
   };
@@ -58,12 +35,12 @@ const SlideThumbnail = ({ slide, onPlaceholderClick, onDelete, onSlidePromptClic
         <span className="thumbnail-number">{slide.slideNumber}</span>
         <span className="thumbnail-title">{slide.layoutName || slide.type}</span>
         <button
-          className={`slide-prompt-btn ${slide.slidePrompt ? 'has-prompt' : ''}`}
+          className={`slide-prompt-btn ${slide.slidePrompt || Object.keys(slide.prompts || {}).length > 0 ? 'has-prompt' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
             if (onSlidePromptClick) onSlidePromptClick(slide);
           }}
-          title={slide.slidePrompt ? 'Edit slide prompt' : 'Add slide prompt'}
+          title="Edit all prompts for this slide"
         >
           <AddIcon sx={{ fontSize: 18 }} />
         </button>

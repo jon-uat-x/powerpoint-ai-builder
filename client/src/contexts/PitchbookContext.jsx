@@ -187,6 +187,39 @@ export const PitchbookProvider = ({ children }) => {
     }
   }, [currentPitchbook]);
 
+  // Update section title
+  const updateSectionTitle = useCallback(async (pitchbookId, oldTitle, newTitle) => {
+    if (!currentPitchbook || currentPitchbook.id !== pitchbookId) return;
+
+    try {
+      // Update all slides with the old section title
+      const updatedSlides = currentPitchbook.slides.map(slide => {
+        if (slide.sectionTitle === oldTitle) {
+          return { ...slide, sectionTitle: newTitle };
+        }
+        return slide;
+      });
+
+      const updatedPitchbook = {
+        ...currentPitchbook,
+        slides: updatedSlides
+      };
+
+      setCurrentPitchbook(updatedPitchbook);
+
+      // Save to backend
+      await pitchbookAPI.update(pitchbookId, { slides: updatedSlides });
+      
+      // Save to local storage as draft
+      localStorage.setItem(`pitchbook_draft_${pitchbookId}`, JSON.stringify(updatedPitchbook));
+      
+      setSuccess('Section title updated');
+    } catch (err) {
+      setError('Failed to update section title');
+      console.error(err);
+    }
+  }, [currentPitchbook]);
+
   // Update pitchbook and section prompts with proper scoping
   const updatePitchbookPrompts = useCallback(async (pitchbookId, prompts) => {
     if (!currentPitchbook || currentPitchbook.id !== pitchbookId) return;
@@ -300,6 +333,7 @@ export const PitchbookProvider = ({ children }) => {
     loadPitchbooks,
     updatePrompts,
     updateSlidePrompt,
+    updateSectionTitle,
     updatePitchbookPrompts,
     generateContent,
     checkGenerationStatus,

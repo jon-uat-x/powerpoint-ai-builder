@@ -139,6 +139,59 @@ export const PitchbookProvider = ({ children }) => {
     }
   }, [currentPitchbook]);
 
+  // Update section title across all slides
+  const updateSectionTitle = useCallback(async (pitchbookId, oldTitle, newTitle) => {
+    if (!currentPitchbook || currentPitchbook.id !== pitchbookId) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Get all slides with the old section title
+      const { data: slides, error: fetchError } = await supabase
+        .from('slides')
+        .select('id')
+        .eq('pitchbook_id', pitchbookId)
+        .eq('section_title', oldTitle);
+      
+      if (fetchError) throw fetchError;
+      
+      // Update all matching slides
+      if (slides && slides.length > 0) {
+        const slideIds = slides.map(s => s.id);
+        const { error: updateError } = await supabase
+          .from('slides')
+          .update({ section_title: newTitle })
+          .in('id', slideIds);
+        
+        if (updateError) throw updateError;
+      }
+      
+      // Update any sections table if it exists
+      const { error: sectionError } = await supabase
+        .from('pitchbook_sections')
+        .update({ title: newTitle })
+        .eq('pitchbook_id', pitchbookId)
+        .eq('title', oldTitle);
+      
+      // Ignore error if sections table doesn't exist
+      if (sectionError && !sectionError.message.includes('relation')) {
+        console.warn('Section update error:', sectionError);
+      }
+      
+      // Reload pitchbook to get updated data
+      await loadPitchbook(pitchbookId);
+      
+      setSuccess('Section title updated successfully');
+    } catch (err) {
+      setError('Failed to update section title');
+      console.error(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [currentPitchbook, loadPitchbook]);
+
   // Update slide
   const updateSlide = useCallback(async (slideId, updates) => {
     try {
@@ -199,6 +252,45 @@ export const PitchbookProvider = ({ children }) => {
     }
   }, [currentPitchbook]);
 
+  // Update pitchbook and section prompts
+  const updatePitchbookPrompts = useCallback(async (pitchbookId, prompts) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const updates = {
+        pitchbook_prompt: prompts.pitchbookPrompt,
+        scoped_prompts: {
+          pitchbook: {
+            scope: 'pitchbook',
+            text: prompts.pitchbookPrompt,
+            appliesTo: 'entire_presentation'
+          },
+          sections: Object.entries(prompts.sectionPrompts || {}).reduce((acc, [sectionName, promptText]) => {
+            acc[sectionName] = {
+              scope: 'section',
+              sectionName: sectionName,
+              text: promptText,
+              appliesTo: `all_slides_in_section_${sectionName}`
+            };
+            return acc;
+          }, {})
+        }
+      };
+
+      const updated = await pitchbookAPI.update(pitchbookId, updates);
+      setCurrentPitchbook(updated);
+      setSuccess('Pitchbook prompts updated successfully');
+      return updated;
+    } catch (err) {
+      setError('Failed to update pitchbook prompts');
+      console.error(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   // Update all prompts for a pitchbook
   const updateAllPrompts = useCallback(async (pitchbookId, prompts) => {
     try {
@@ -250,7 +342,9 @@ export const PitchbookProvider = ({ children }) => {
     updatePitchbook,
     deletePitchbook,
     updateSlide,
+    updateSectionTitle,
     updatePrompts,
+    updatePitchbookPrompts,
     updateAllPrompts,
     generatePitchbook,
     

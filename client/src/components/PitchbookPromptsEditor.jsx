@@ -9,15 +9,22 @@ import {
   Box, 
   Typography,
   Divider,
-  Paper
+  Paper,
+  IconButton
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import { usePitchbook } from '../contexts/PitchbookContext';
 
 const PitchbookPromptsEditor = ({ open, onClose, pitchbook }) => {
   const [pitchbookPrompt, setPitchbookPrompt] = useState('');
   const [sectionPrompts, setSectionPrompts] = useState({});
+  const [sectionTitles, setSectionTitles] = useState({});
+  const [editingSection, setEditingSection] = useState(null);
+  const [editedTitle, setEditedTitle] = useState('');
   const [touched, setTouched] = useState(false);
-  const { updatePitchbookPrompts } = usePitchbook();
+  const { updatePitchbookPrompts, updateSectionTitle } = usePitchbook();
 
   // Extract unique sections from slides
   const sections = pitchbook?.slides
@@ -29,17 +36,34 @@ const PitchbookPromptsEditor = ({ open, onClose, pitchbook }) => {
     if (pitchbook) {
       setPitchbookPrompt(pitchbook.pitchbookPrompt || '');
       setSectionPrompts(pitchbook.sectionPrompts || {});
+      
+      // Initialize section titles
+      const titles = {};
+      sections.forEach(section => {
+        titles[section] = section;
+      });
+      setSectionTitles(titles);
     }
     setTouched(false);
+    setEditingSection(null);
   }, [pitchbook, open]);
 
   const handleSave = async () => {
     if (!pitchbook) return;
     
+    // Save prompts
     await updatePitchbookPrompts(pitchbook.id, {
       pitchbookPrompt,
       sectionPrompts
     });
+    
+    // Save any changed section titles
+    for (const [oldTitle, newTitle] of Object.entries(sectionTitles)) {
+      if (oldTitle !== newTitle && newTitle.trim()) {
+        await updateSectionTitle(pitchbook.id, oldTitle, newTitle);
+      }
+    }
+    
     onClose();
   };
 
@@ -54,6 +78,41 @@ const PitchbookPromptsEditor = ({ open, onClose, pitchbook }) => {
       [section]: value
     }));
     setTouched(true);
+  };
+
+  const handleStartEditSection = (section) => {
+    setEditingSection(section);
+    setEditedTitle(sectionTitles[section] || section);
+  };
+
+  const handleSaveEditSection = () => {
+    if (editedTitle.trim() && editingSection) {
+      // Update the section title in our local state
+      const newSectionTitles = { ...sectionTitles };
+      const newSectionPrompts = { ...sectionPrompts };
+      
+      // If the title changed, update the prompts mapping
+      if (editingSection !== editedTitle) {
+        newSectionTitles[editingSection] = editedTitle;
+        
+        // Move the prompt to the new title if it exists
+        if (sectionPrompts[editingSection]) {
+          newSectionPrompts[editedTitle] = sectionPrompts[editingSection];
+          delete newSectionPrompts[editingSection];
+        }
+      }
+      
+      setSectionTitles(newSectionTitles);
+      setSectionPrompts(newSectionPrompts);
+      setTouched(true);
+    }
+    setEditingSection(null);
+    setEditedTitle('');
+  };
+
+  const handleCancelEditSection = () => {
+    setEditingSection(null);
+    setEditedTitle('');
   };
 
   const handleClose = () => {
@@ -137,49 +196,108 @@ const PitchbookPromptsEditor = ({ open, onClose, pitchbook }) => {
                 Section Prompts
               </Typography>
               
-              {sections.map((section, index) => (
-                <Paper 
-                  key={index} 
-                  elevation={0}
-                  sx={{ 
-                    mb: 2, 
-                    p: 2, 
-                    bgcolor: 'var(--bg-primary)',
-                    border: '1px solid var(--border-color)'
-                  }}
-                >
-                  <Typography variant="subtitle2" sx={{ color: 'var(--text-primary)', mb: 1 }}>
-                    Section: {section}
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    multiline
-                    rows={3}
-                    value={sectionPrompts[section] || ''}
-                    onChange={(e) => handleSectionPromptChange(section, e.target.value)}
-                    placeholder={`Enter specific instructions for the "${section}" section`}
-                    variant="outlined"
-                    size="small"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        color: 'var(--text-primary)',
-                        '& fieldset': {
-                          borderColor: 'var(--border-color)',
-                        },
-                        '&:hover fieldset': {
-                          borderColor: 'var(--border-hover)',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: 'var(--primary-color)',
-                        },
-                      },
-                      '& .MuiInputBase-input': {
-                        color: 'var(--text-primary)',
-                      },
+              {sections.map((section, index) => {
+                const currentTitle = sectionTitles[section] || section;
+                const isEditing = editingSection === section;
+                
+                return (
+                  <Paper 
+                    key={index} 
+                    elevation={0}
+                    sx={{ 
+                      mb: 2, 
+                      p: 2, 
+                      bgcolor: 'var(--bg-primary)',
+                      border: '1px solid var(--border-color)'
                     }}
-                  />
-                </Paper>
-              ))}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                      {isEditing ? (
+                        <>
+                          <TextField
+                            value={editedTitle}
+                            onChange={(e) => setEditedTitle(e.target.value)}
+                            size="small"
+                            sx={{
+                              flex: 1,
+                              mr: 1,
+                              '& .MuiOutlinedInput-root': {
+                                color: 'var(--text-primary)',
+                                '& fieldset': {
+                                  borderColor: 'var(--border-color)',
+                                },
+                                '&:hover fieldset': {
+                                  borderColor: 'var(--border-hover)',
+                                },
+                                '&.Mui-focused fieldset': {
+                                  borderColor: 'var(--primary-color)',
+                                },
+                              },
+                              '& .MuiInputBase-input': {
+                                color: 'var(--text-primary)',
+                              },
+                            }}
+                          />
+                          <IconButton 
+                            size="small" 
+                            onClick={handleSaveEditSection}
+                            sx={{ color: 'var(--success-color)' }}
+                          >
+                            <CheckIcon fontSize="small" />
+                          </IconButton>
+                          <IconButton 
+                            size="small" 
+                            onClick={handleCancelEditSection}
+                            sx={{ color: 'var(--text-secondary)' }}
+                          >
+                            <CloseIcon fontSize="small" />
+                          </IconButton>
+                        </>
+                      ) : (
+                        <>
+                          <Typography variant="subtitle2" sx={{ color: 'var(--text-primary)', flex: 1 }}>
+                            Section: {currentTitle}
+                          </Typography>
+                          <IconButton 
+                            size="small" 
+                            onClick={() => handleStartEditSection(section)}
+                            sx={{ color: 'var(--text-secondary)' }}
+                          >
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </>
+                      )}
+                    </Box>
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={3}
+                      value={sectionPrompts[currentTitle] || sectionPrompts[section] || ''}
+                      onChange={(e) => handleSectionPromptChange(currentTitle, e.target.value)}
+                      placeholder={`Enter specific instructions for the "${currentTitle}" section`}
+                      variant="outlined"
+                      size="small"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          color: 'var(--text-primary)',
+                          '& fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'var(--border-hover)',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'var(--primary-color)',
+                          },
+                        },
+                        '& .MuiInputBase-input': {
+                          color: 'var(--text-primary)',
+                        },
+                      }}
+                    />
+                  </Paper>
+                );
+              })}
             </Box>
           </>
         )}
@@ -216,7 +334,7 @@ const PitchbookPromptsEditor = ({ open, onClose, pitchbook }) => {
             }
           }}
         >
-          Save Prompts
+          Save All Changes
         </Button>
       </DialogActions>
     </Dialog>

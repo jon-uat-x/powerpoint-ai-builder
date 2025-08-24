@@ -2,19 +2,19 @@ import React, { useEffect, useState, useCallback } from 'react';
 import DraggableSlideThumbnail from './DraggableSlideThumbnail';
 import DropZone from './DropZone';
 import ConfirmDialog from './ConfirmDialog';
-import SlidePromptEditor from './SlidePromptEditor';
+import CentralizedPromptEditor from './CentralizedPromptEditor';
 import PitchbookPromptsEditor from './PitchbookPromptsEditor';
 import ContentGenerator from './ContentGenerator';
 import { usePitchbook } from '../contexts/PitchbookContext';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import './SlideGrid.css';
 
-const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
+const SlideGrid = ({ pitchbookId }) => {
   const { currentPitchbook, loadPitchbook, layouts, loading } = usePitchbook();
   const [slides, setSlides] = useState([]);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [slideToDelete, setSlideToDelete] = useState(null);
-  const [slidePromptEditorOpen, setSlidePromptEditorOpen] = useState(false);
+  const [centralizedPromptEditorOpen, setCentralizedPromptEditorOpen] = useState(false);
   const [selectedSlideForPrompt, setSelectedSlideForPrompt] = useState(null);
   const [pitchbookPromptsOpen, setPitchbookPromptsOpen] = useState(false);
   const [contentGeneratorOpen, setContentGeneratorOpen] = useState(false);
@@ -43,20 +43,18 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
     }
   }, [currentPitchbook, layouts]);
 
-  const handlePlaceholderClick = (slideNumber, placeholderId, placeholderInfo) => {
-    if (onPromptEdit) {
-      onPromptEdit(slideNumber, placeholderId, placeholderInfo);
-    }
-  };
-
   const handleSlidePromptClick = (slide) => {
     setSelectedSlideForPrompt(slide);
-    setSlidePromptEditorOpen(true);
+    setCentralizedPromptEditorOpen(true);
   };
 
-  const handleSlidePromptClose = () => {
-    setSlidePromptEditorOpen(false);
+  const handleCentralizedPromptClose = () => {
+    setCentralizedPromptEditorOpen(false);
     setSelectedSlideForPrompt(null);
+    // Reload pitchbook to refresh prompts
+    if (pitchbookId) {
+      loadPitchbook(pitchbookId);
+    }
   };
 
   const handlePitchbookPromptsClick = () => {
@@ -252,9 +250,6 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
             index={index}
             moveSlide={moveSlide}
             insertSlide={insertSlide}
-            onPlaceholderClick={(placeholderId, placeholderInfo) => 
-              handlePlaceholderClick(slide.slideNumber, placeholderId, placeholderInfo)
-            }
             onSlidePromptClick={handleSlidePromptClick}
             onDelete={handleDeleteClick}
           />
@@ -274,9 +269,9 @@ const SlideGrid = ({ pitchbookId, onPromptEdit }) => {
         onCancel={handleDeleteCancel}
       />
       
-      <SlidePromptEditor
-        open={slidePromptEditorOpen}
-        onClose={handleSlidePromptClose}
+      <CentralizedPromptEditor
+        open={centralizedPromptEditorOpen}
+        onClose={handleCentralizedPromptClose}
         slide={selectedSlideForPrompt}
       />
       

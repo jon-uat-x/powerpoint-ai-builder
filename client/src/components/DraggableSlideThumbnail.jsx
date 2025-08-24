@@ -13,7 +13,6 @@ const DraggableSlideThumbnail = ({
   index, 
   moveSlide, 
   insertSlide,
-  onPlaceholderClick,
   onSlidePromptClick,
   onDelete
 }) => {
@@ -120,7 +119,6 @@ const DraggableSlideThumbnail = ({
       >
         <SlideThumbnail
           slide={slide}
-          onPlaceholderClick={onPlaceholderClick}
           onSlidePromptClick={onSlidePromptClick}
           onDelete={onDelete}
           showDelete={true}
