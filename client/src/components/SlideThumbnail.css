@@ -46,6 +46,16 @@
   text-overflow: ellipsis;
 }
 
+.thumbnail-title.section-title {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.thumbnail-title.layout-title {
+  font-style: italic;
+  opacity: 0.9;
+}
+
 .thumbnail-content {
   flex: 1;
   position: relative;

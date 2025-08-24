@@ -33,7 +33,9 @@ const SlideThumbnail = ({ slide, onDelete, onSlidePromptClick, showDelete = fals
     <div className="slide-thumbnail">
       <div className="thumbnail-header">
         <span className="thumbnail-number">{slide.slideNumber}</span>
-        <span className="thumbnail-title">{slide.layoutName || slide.type}</span>
+        <span className={`thumbnail-title ${slide.sectionTitle ? 'section-title' : 'layout-title'}`}>
+          {slide.sectionTitle || slide.layoutName || slide.type}
+        </span>
         <button
           className={`slide-prompt-btn ${slide.slidePrompt || Object.keys(slide.prompts || {}).length > 0 ? 'has-prompt' : ''}`}
           onClick={(e) => {
@@ -58,12 +60,6 @@ const SlideThumbnail = ({ slide, onDelete, onSlidePromptClick, showDelete = fals
           )}
         </div>
       </div>
-
-      {slide.sectionTitle && (
-        <div className="thumbnail-section">
-          Section: {slide.sectionTitle}
-        </div>
-      )}
 
       <div className="thumbnail-footer">
         <span className="prompt-count">
